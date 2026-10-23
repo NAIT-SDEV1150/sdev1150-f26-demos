@@ -1,0 +1,23 @@
+body { font-family: system-ui, sans-serif; max-width: 480px; margin: 2rem auto; padding: 0 1rem; text-align: center; }
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 90px);
+  grid-template-rows: repeat(3, 90px);
+  gap: 6px;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.cell {
+  display: flex; align-items: center; justify-content: center;
+  background: #f1f5f9;
+  border-radius: 8px;
+  font-size: 3rem; font-weight: bold;
+  cursor: pointer;
+}
+.cell:hover { background: #e2e8f0; }
+
+.x { color: #2563eb; }
+.o { color: #dc2626; }
+.hidden { display: none; }

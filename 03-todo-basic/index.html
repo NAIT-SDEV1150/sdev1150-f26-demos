@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Day 14 – to-do list (plain HTML)</title>
+  <!-- Just enough CSS to see the states. Demo 4 is the full styling. -->
+  <style>
+    .done span { text-decoration: line-through; }
+    .invalid { border: 2px solid red; }
+    .error-message { color: red; }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <h1>My to-do list</h1>
+
+  <form id="todo-form" novalidate>
+    <label for="todo-input">New item</label>
+    <div class="field">
+      <input type="text" id="todo-input" autocomplete="off">
+      <div class="error-message"></div>
+    </div>
+    <button type="submit">Add</button>
+  </form>
+
+  <ul id="todo-list"></ul>
+</body>
+</html>

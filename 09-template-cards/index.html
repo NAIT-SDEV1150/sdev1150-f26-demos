@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Reusable cards with template</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <h1>Study cards</h1>
+  <form id="card-form">
+    <input id="title" placeholder="Title" autocomplete="off">
+    <input id="detail" placeholder="Detail" autocomplete="off">
+    <button type="submit">Add card</button>
+  </form>
+  <div id="cards"></div>
+
+  <!-- A template is NOT shown on the page. It is a stamp we copy from. -->
+  <template id="card-template">
+    <h2 class="card-title"></h2>
+    <p class="card-detail"></p>
+    <button class="remove">Remove</button>
+  </template>
+</body>
+</html>

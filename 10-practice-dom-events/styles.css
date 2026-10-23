@@ -1,0 +1,25 @@
+body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+section { margin: 1.5rem 0; padding: 1rem; border: 1px solid #cbd5e1; border-radius: 8px; }
+h2 { margin-top: 0; }
+button { cursor: pointer; padding: .3rem .7rem; }
+input, select, textarea { font: inherit; }
+
+.hidden    { display: none; }                     /* gone from the page */
+.highlight { background: #fef08a; }               /* yellow marker */
+.boxed     { border: 2px dashed #64748b; padding: .5rem 2rem; }
+.banner    { padding: .5rem; background: #dcfce7; border-radius: 6px; }
+.panel     { margin-top: .75rem; padding: 1rem; background: #e0f2fe; border-radius: 8px; }
+.panel.hidden { display: none; }
+.output    { min-height: 2rem; padding: .5rem; border: 1px dotted #94a3b8; }
+
+.dark { background: #1e293b; color: #f1f5f9; }
+.dark section { border-color: #475569; }
+
+.done    { text-decoration: line-through; color: #64748b; }
+.error   { color: #b91c1c; }
+.ok      { color: #15803d; }
+.warning { color: #b91c1c; font-weight: bold; }
+.liked   { background: #fecdd3; }
+
+#count { display: inline-block; min-width: 2.5rem; text-align: center; font-size: 1.5rem; }
+.message { margin-left: .5rem; }

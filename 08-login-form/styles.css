@@ -1,0 +1,11 @@
+body { font-family: system-ui, sans-serif; background: #f1f5f9; display: flex; justify-content: center; padding: 3rem 1rem; }
+.card { background: white; padding: 1.5rem; border-radius: 12px; width: 100%; max-width: 380px; box-shadow: 0 8px 24px rgb(0 0 0 / .08); }
+.field { margin-bottom: .9rem; }
+label { display: block; font-weight: 600; margin-bottom: .25rem; }
+input { width: 100%; box-sizing: border-box; padding: .55rem; font-size: 1rem; border: 2px solid #cbd5e1; border-radius: 8px; }
+input.touched:invalid { border-color: #dc2626; }
+input.touched:valid { border-color: #16a34a; }
+.error-message { color: #dc2626; font-size: .85rem; min-height: 1.1em; margin-top: .2rem; }
+button { width: 100%; padding: .6rem; font-size: 1rem; border: none; border-radius: 8px; background: #2563eb; color: white; cursor: pointer; }
+#result.ok { color: #16a34a; } #result.bad { color: #dc2626; }
+.hint { color: #64748b; font-size: .85rem; }

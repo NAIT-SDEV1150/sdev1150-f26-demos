@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Day 15 – DOM and events practice</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1 id="page-title">Practice Page</h1>
+    <p class="subtitle">25 questions, one page</p>
+    <p id="greeting">Hello!</p>
+  </header>
+
+  <!-- ===== Q1–10: finding and changing elements ===== -->
+  <section id="intro">
+    <h2>Notes</h2>
+    <p class="note">First note</p>
+    <p class="note">Second note</p>
+    <p class="note important">Third note (important)</p>
+    <p data-role="tip">Tip: read the question twice.</p>
+    <p id="banner" class="banner hidden">You found the hidden banner!</p>
+  </section>
+
+  <section id="shop">
+    <h2>Products</h2>
+    <ul id="products">
+      <li class="item">Apple</li>
+      <li class="item sale">Banana</li>
+      <li class="item">Cherry</li>
+      <li class="item sale">Grape</li>
+      <li class="item">Mango</li>
+    </ul>
+    <p id="item-count">There are ? items.</p>
+    <img id="photo" alt="Placeholder photo" width="160" height="100"
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='100'%3E%3Crect width='160' height='100' fill='%23cbd5e1'/%3E%3Ctext x='80' y='55' font-size='14' text-anchor='middle' fill='%23334155'%3EPhoto%3C/text%3E%3C/svg%3E">
+  </section>
+
+  <!-- ===== Q11–15: simple events ===== -->
+  <section id="events">
+    <h2>Simple events</h2>
+
+    <button id="btn-hello" type="button">Say hello</button>
+    <p id="hello-text">Nothing yet.</p>
+
+    <button id="btn-theme" type="button">Dark mode</button>
+
+    <p>
+      <label for="name-input">Your name</label>
+      <input type="text" id="name-input">
+    </p>
+    <p id="preview"></p>
+
+    <p>
+      <input type="checkbox" id="agree">
+      <label for="agree">I agree to the rules</label>
+    </p>
+    <p id="agree-status">Not agreed</p>
+
+    <p>
+      <label for="size">Size</label>
+      <select id="size">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+      </select>
+    </p>
+    <p id="size-status">You picked small</p>
+  </section>
+
+  <!-- ===== Q16–20: more complex ===== -->
+  <section id="counter-box">
+    <h2>Counter</h2>
+    <button id="btn-minus" type="button">−</button>
+    <span id="count">0</span>
+    <button id="btn-plus" type="button">+</button>
+  </section>
+
+  <section id="todo">
+    <h2>To-do (press Enter)</h2>
+    <label for="new-item">New item</label>
+    <input type="text" id="new-item">
+    <ul id="todo-list"></ul>
+  </section>
+
+  <section id="details-box">
+    <h2>Details</h2>
+    <button id="btn-panel" type="button">Show details</button>
+    <div id="panel" class="panel hidden">
+      <p>Surprise! These are the details.</p>
+    </div>
+  </section>
+
+  <section id="signup">
+    <h2>Sign up</h2>
+    <form id="signup-form" novalidate>
+      <label for="email">Email</label>
+      <input type="text" id="email">
+      <span class="message"></span>
+      <button type="submit">Sign up</button>
+    </form>
+  </section>
+
+  <!-- ===== Q21–25: applied ===== -->
+  <section id="applied">
+    <h2>Applied</h2>
+
+    <button id="btn-like" type="button">♥ Like (0)</button>
+
+    <p>
+      <label for="bio">Short bio (50 characters max)</label><br>
+      <textarea id="bio" rows="3" cols="40"></textarea>
+    </p>
+    <p id="char-count">0 / 50</p>
+
+    <p>
+      <label for="search">Search fruit</label>
+      <input type="text" id="search">
+    </p>
+    <ul id="fruit-list">
+      <li>Apple</li>
+      <li>Apricot</li>
+      <li>Banana</li>
+      <li>Blueberry</li>
+      <li>Cherry</li>
+      <li>Grape</li>
+    </ul>
+
+    <form id="cart-form" novalidate>
+      <label for="cart-name">Item</label>
+      <input type="text" id="cart-name">
+      <label for="cart-price">Price</label>
+      <input type="number" id="cart-price" step="0.01">
+      <button type="submit">Add to cart</button>
+    </form>
+    <ul id="cart"></ul>
+    <p id="total">Total: $0.00</p>
+
+    <p>
+      <label for="color-picker">Page colour</label>
+      <input type="color" id="color-picker" value="#ffffff">
+      <span id="color-value">#ffffff</span>
+    </p>
+  </section>
+
+  <div id="output" class="output"></div>
+
+  <footer>Made by: ?</footer>
+</body>
+</html>

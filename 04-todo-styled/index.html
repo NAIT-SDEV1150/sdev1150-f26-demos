@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Day 14 – to-do list (styled)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <main class="card">
+  <h1>My to-do list</h1>
+
+  <form id="todo-form" novalidate>
+    <label for="todo-input">New item</label>
+    <div class="field">
+      <input type="text" id="todo-input" autocomplete="off">
+      <div class="error-message"></div>
+    </div>
+    <button type="submit">Add</button>
+  </form>
+
+  <ul id="todo-list"></ul>
+  </main>
+</body>
+</html>

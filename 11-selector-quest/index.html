@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Selector Quest · SDEV1150</title>
+<style>
+:root{
+  --ink:#1b1f3b; --muted:#474d70; --card:#ffffff; --bg1:#2b2d6e; --bg2:#0f6e78;
+  --accent:#f5b301; --good:#146c34; --goodbg:#e2f4e7; --bad:#a8231a; --badbg:#fdeceb;
+  --code:#1d2135; --codeink:#eef0ff; --line:#d9dcef; --soft:#ecebff; --softink:#30327f;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));background-attachment:fixed;min-height:100vh;line-height:1.45}
+[hidden]{display:none!important}
+kbd{font-family:var(--mono);font-size:.85em;background:var(--soft);color:var(--softink);border-radius:6px;padding:1px 6px;border:1px solid #cfd0f5}
+
+/* top bar */
+.sq-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 18px;color:#fff;max-width:1100px;margin:0 auto}
+.sq-logo{display:flex;align-items:center;gap:10px;background:none;border:0;color:#fff;cursor:pointer;font:inherit;font-weight:800;font-size:1.2rem;padding:4px;border-radius:10px}
+.sq-logo .mark{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--accent);color:var(--ink);font-family:var(--mono);font-size:.82rem;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.sq-stats{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.sq-pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:6px 12px;border-radius:999px;font-weight:600;font-size:.92rem;white-space:nowrap}
+.sq-pill b{color:#ffe08a;display:inline-block;min-width:1.5ch;text-align:right}
+.sq-pill.bump b{animation:pop .45s ease}
+.sq-pill.warn{background:rgba(255,90,70,.35)}
+
+main{max-width:1100px;margin:0 auto;padding:4px 14px 48px}
+.card{background:var(--card);border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,.24);padding:22px}
+.screen{animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.85)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes shake{15%,55%{transform:translateX(-8px)}35%,75%{transform:translateX(8px)}}
+.shake{animation:shake .42s ease}
+
+/* home */
+.hero h1{margin:0 0 6px;font-size:clamp(1.7rem,4.5vw,2.5rem);letter-spacing:-.5px}
+.hero h1 span{background:linear-gradient(90deg,#3c3fb5,#0f8a8a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{margin:0;color:var(--muted);max-width:62ch}
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:14px;margin-top:20px}
+.lvl{text-align:left;border:2px solid var(--line);background:#fafbff;border-radius:14px;padding:16px;cursor:pointer;font:inherit;color:inherit;
+  transition:transform .15s,box-shadow .15s,border-color .15s;display:flex;flex-direction:column;gap:6px}
+.lvl:hover,.lvl:focus-visible{transform:translateY(-3px);box-shadow:0 10px 20px rgba(43,45,110,.18);border-color:#5e62d0;outline:none}
+.lvl .num{align-self:flex-start;background:var(--bg1);color:#fff;border-radius:8px;padding:2px 9px;font-size:.78rem;font-weight:700;letter-spacing:.3px}
+.lvl h3{margin:2px 0 0;font-size:1.08rem}
+.lvl p{margin:0;color:var(--muted);font-size:.9rem;flex:1}
+.lvl .meta{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--muted)}
+.lvl.lightning{background:linear-gradient(135deg,#fff8dc,#ffe7a0);border-color:#e8bd3f}
+.lvl.lightning .num{background:#8a5a00}
+.stars{color:#c3c6de;font-size:1.15rem;letter-spacing:2px}
+.stars .on{color:var(--accent);text-shadow:0 1px 0 #b98600}
+.tips{margin:18px 0 0;color:var(--muted);font-size:.92rem}
+
+/* play */
+.bar{height:10px;background:rgba(255,255,255,.22);border-radius:999px;overflow:hidden;margin:2px 0 14px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd34d,#7ef0c6);transition:width .45s ease}
+.qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{background:var(--soft);color:var(--softink);font-weight:700;font-size:.8rem;padding:4px 11px;border-radius:999px}
+.count{color:var(--muted);font-size:.88rem;font-weight:600}
+.qhead .btn{margin-left:auto}
+.prompt{font-size:clamp(1.08rem,2.6vw,1.3rem);font-weight:750;margin:10px 0 16px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+
+.frame{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(27,31,59,.08)}
+.chrome{display:flex;align-items:center;gap:6px;background:#eef0f8;padding:8px 10px;border-bottom:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;background:#ff6159;flex:none}
+.dot:nth-child(2){background:#ffbd2e}.dot:nth-child(3){background:#28c941}
+.url{margin-left:6px;background:#fff;border-radius:6px;padding:2px 9px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--mono)}
+#sq-preview{padding:14px 18px 16px;font-family:Georgia,"Times New Roman",serif;min-height:210px;color:#222}
+#sq-preview h2{margin:0 0 8px;font-size:1.35rem;color:#7a2e0e}
+#sq-preview h3{margin:0 0 10px;font-size:1.15rem;color:#14506b}
+#sq-preview ul{margin:0 0 8px;padding-left:22px}
+#sq-preview li{padding:2px 6px;margin:2px 0}
+#sq-preview p{margin:6px 0;padding:2px 6px}
+#sq-preview .sale{color:#b3261e;font-weight:bold}
+#sq-preview .note{font-size:.85rem;color:#555;font-style:italic}
+#sq-preview button{font:inherit;font-size:.95rem;padding:6px 16px;border-radius:8px;border:1px solid #7a2e0e;background:#fff2e8;color:#7a2e0e;cursor:pointer;margin-top:4px}
+#sq-preview label{display:block;margin:6px 0;font-size:.95rem}
+#sq-preview input[type=text],#sq-preview input[type=email]{font:inherit;font-size:.92rem;padding:5px 8px;border:1px solid #9aa;border-radius:6px;width:100%;max-width:230px;display:block;margin-top:2px}
+#sq-preview #msg{min-height:1.4em;color:#14506b;font-weight:bold}
+#sq-preview .glow,#sq-preview .sq-hit{outline:3px solid var(--accent);background-color:#fff1bd;box-shadow:0 0 0 6px rgba(245,179,1,.25);border-radius:5px;animation:pop .45s ease}
+.src{border-top:1px solid var(--line);background:#161a33}
+.src-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:7px 12px;font-size:.74rem;color:#c9cdf0;background:#1f2447;font-family:var(--mono)}
+.src-head b{color:#fff;letter-spacing:1px;font-family:system-ui,sans-serif}
+.src-legend{display:flex;gap:10px;flex-wrap:wrap}
+pre.src-code{margin:0;padding:10px 14px 12px;font-family:var(--mono);font-size:.8rem;line-height:1.55;color:#e8eaff;white-space:pre;overflow-x:auto;max-height:260px}
+.src-code .t{color:#8fc7ff}
+.src-code .an{color:#b9bedf}
+.src-code .av{color:#ffcb8b}
+.src-code .tx{color:#ffffff}
+.src-code .aid,.src-legend .aid{color:#ff9ecf;background:rgba(255,105,180,.16);border-radius:4px;padding:0 2px;font-weight:700}
+.src-code .acl,.src-legend .acl{color:#7ef0c6;background:rgba(80,220,170,.16);border-radius:4px;padding:0 2px;font-weight:700}
+.src-code .stag{border-radius:4px;transition:background-color .3s,box-shadow .3s}
+.src-code .stag.on{background:rgba(255,211,77,.3);box-shadow:0 0 0 2px #ffd34d;animation:pop .45s ease}
+.console{font-family:var(--mono);font-size:.88rem;background:var(--code);color:#7ef0c6;padding:8px 14px;border-top:1px solid #000;animation:fadeUp .3s ease}
+.console::before{content:"console  ";color:#8f95c9;font-size:.75rem}
+
+pre.code{background:var(--code);color:var(--codeink);border-radius:12px;padding:14px 16px;font-family:var(--mono);font-size:.93rem;line-height:1.6;overflow-x:auto;margin:0 0 14px;white-space:pre}
+pre.code .str{color:#ffcb8b}
+pre.code .cm{color:#8f95c9;font-style:italic}
+.blank{display:inline-block;min-width:5ch;border-bottom:2px dashed #ffd34d;color:#ffd34d;padding:0 4px;text-align:center}
+.blank.filled{border-bottom-style:solid;color:#7ef0c6;animation:pop .45s ease}
+
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:11px 14px;
+  font:inherit;color:inherit;cursor:pointer;transition:transform .12s,border-color .12s,background-color .2s}
+.opt:hover:not(:disabled){border-color:#5e62d0;transform:translateX(3px)}
+.opt kbd{flex:none;display:inline-grid;place-items:center;width:28px;height:28px;padding:0;font-weight:800}
+.opt .txt{font-family:var(--mono);font-size:.93rem;word-break:break-word}
+.opt .txt.plain{font-family:inherit}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.right kbd{background:var(--good);color:#fff;border-color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg);color:#6d1a14}
+.opt:disabled{cursor:default}
+
+.line{min-height:58px;border:2px dashed #9aa0d6;border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#f6f7ff;margin-bottom:12px}
+.line:empty::before{content:"Click the pieces below in order...";color:var(--muted);font-size:.9rem;padding-left:4px}
+.line.done{border-style:solid;border-color:var(--good);background:var(--goodbg)}
+.fixed-line{font-family:var(--mono);font-size:.88rem;background:var(--code);color:var(--codeink);border-radius:10px;padding:8px 12px;margin-bottom:8px;white-space:pre;overflow-x:auto;user-select:none}
+.fixed-line .str{color:#ffcb8b}
+.fixed-line .given,pre.code .given{color:#8f95c9;font-style:italic}
+.bank{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.chip{font-family:var(--mono);font-size:.9rem;border:2px solid #c3c7ef;background:#fff;color:var(--ink);border-radius:10px;padding:7px 10px;cursor:pointer;white-space:pre;
+  transition:transform .12s,border-color .12s;animation:pop .25s ease}
+.chip:hover:not(:disabled){transform:translateY(-2px);border-color:#5e62d0}
+.chip .k{font-family:system-ui,sans-serif;font-size:.7rem;color:#5e62d0;margin-right:7px;font-weight:800}
+.chip.placed{background:var(--code);color:var(--codeink);border-color:var(--code)}
+.chip.bad{border-color:var(--bad);background:var(--badbg);color:#6d1a14}
+
+.feedback{margin-top:14px;padding:11px 14px;border-radius:11px;font-weight:600;display:none;animation:fadeUp .25s ease}
+.feedback.good{display:block;background:var(--goodbg);color:#0d4f25;border-left:5px solid var(--good)}
+.feedback.bad{display:block;background:var(--badbg);color:#7c1a12;border-left:5px solid var(--bad)}
+.feedback .why{display:block;font-weight:500;margin-top:3px}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer;background:var(--bg1);color:#fff;transition:transform .12s,filter .12s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.btn.ghost{background:var(--soft);color:var(--softink)}
+.btn.small{padding:6px 12px;font-size:.85rem;border-radius:9px}
+.btn.gold{background:var(--accent);color:var(--ink)}
+.btn:focus-visible,.opt:focus-visible,.chip:focus-visible,.lvl:focus-visible,.sq-logo:focus-visible{outline:3px solid #ffb703;outline-offset:2px}
+
+/* done */
+.done{text-align:center;padding:34px 22px}
+.done h2{margin:0 0 6px;font-size:clamp(1.6rem,4vw,2.2rem)}
+.bigstars{font-size:3.2rem;letter-spacing:8px;color:#d3d5ea;margin:8px 0}
+.bigstars span{display:inline-block}
+.bigstars .on{color:var(--accent);animation:starIn .55s cubic-bezier(.2,1.6,.4,1) both;text-shadow:0 2px 0 #b98600}
+.bigstars .on:nth-child(2){animation-delay:.2s}.bigstars .on:nth-child(3){animation-delay:.4s}
+@keyframes starIn{from{transform:scale(0) rotate(-90deg);opacity:0}to{transform:none;opacity:1}}
+.done .big{font-size:2.6rem;font-weight:800;color:var(--bg1);margin:4px 0}
+.done p{color:var(--muted);margin:6px 0}
+.done .badge{display:inline-block;background:#fff1bd;color:#6b4a00;border-radius:999px;padding:4px 12px;font-weight:700;margin-top:6px}
+.done .actions{justify-content:center;margin-top:22px}
+
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.confetti i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px;animation-name:fall;animation-timing-function:cubic-bezier(.3,.6,.6,1);animation-fill-mode:forwards}
+@keyframes fall{to{transform:translate(var(--dx),108vh) rotate(var(--r));opacity:.85}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:520px){.card{padding:16px}.sq-top{padding:10px 12px}.sq-pill{font-size:.82rem;padding:5px 9px}}
+</style>
+</head>
+<body>
+<header class="sq-top">
+  <button class="sq-logo" id="sq-logo" type="button" aria-label="Selector Quest: back to levels"><span class="mark" aria-hidden="true">$( )</span>Selector Quest</button>
+  <div class="sq-stats">
+    <span class="sq-pill" id="sq-timer-pill" hidden>Time <b id="sq-timer">60</b>s</span>
+    <span class="sq-pill" id="sq-score-pill">Score <b id="sq-score">0</b></span>
+    <span class="sq-pill" id="sq-streak-pill">Streak <b id="sq-streak">0</b></span>
+  </div>
+</header>
+
+<main>
+  <section id="sq-home" class="screen">
+    <div class="card hero">
+      <h1>Welcome to <span>Selector Quest</span></h1>
+      <p class="lead">No typing today! Pick, click and arrange your way through selectors, events and arrow functions. Get it right and the mini page reacts. Get it wrong and you get a hint and another try.</p>
+      <div class="levels" id="sq-levels"></div>
+      <p class="tips">Keyboard: press <kbd>1</kbd> to <kbd>4</kbd> to choose an answer, <kbd>Enter</kbd> to continue, <kbd>Backspace</kbd> to undo a code piece. Three stars means no mistakes.</p>
+    </div>
+  </section>
+
+  <section id="sq-play" class="screen" hidden>
+    <div class="bar" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="100" id="sq-barwrap"><i id="sq-bar"></i></div>
+    <div class="card" id="sq-card">
+      <div class="qhead">
+        <span class="tag" id="sq-tag"></span>
+        <span class="count" id="sq-count"></span>
+        <button class="btn ghost small" id="sq-quit" type="button">Levels</button>
+      </div>
+      <h2 class="prompt" id="sq-prompt"></h2>
+      <div class="grid">
+        <div class="frame" aria-label="Mini page preview">
+          <div class="chrome" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url" id="sq-url">index.html</span><span>Live page</span></div>
+          <div id="sq-preview"></div>
+          <div class="console" id="sq-console" hidden></div>
+          <div class="src" aria-label="HTML source of the mini page">
+            <div class="src-head"><b>HTML</b><span class="src-legend"><span><span class="aid">#id</span> = <span class="aid">id="…"</span></span><span><span class="acl">.class</span> = <span class="acl">class="…"</span></span></span></div>
+            <pre class="src-code" id="sq-src"></pre>
+          </div>
+        </div>
+        <div>
+          <pre class="code" id="sq-code"></pre>
+          <div class="opts" id="sq-opts"></div>
+          <div id="sq-order" hidden>
+            <div class="fixed-line" id="sq-fixed" aria-label="Given code (already written for you)" hidden></div>
+            <div class="line" id="sq-line" aria-label="Your code so far"></div>
+            <div class="bank" id="sq-bank" aria-label="Code pieces"></div>
+            <div class="actions">
+              <button class="btn ghost" id="sq-clear" type="button">Clear</button>
+              <button class="btn" id="sq-check" type="button">Check</button>
+            </div>
+          </div>
+          <div class="feedback" id="sq-feedback" role="status" aria-live="polite"></div>
+          <div class="actions"><button class="btn gold" id="sq-next" type="button" hidden>Next &rarr;</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sq-done" class="screen" hidden>
+    <div class="card done">
+      <h2 id="sq-done-title">Level complete!</h2>
+      <div class="bigstars" id="sq-done-stars" aria-hidden="true"></div>
+      <div class="big" id="sq-done-score">0</div>
+      <p id="sq-done-msg"></p>
+      <div id="sq-done-badge"></div>
+      <div class="actions">
+        <button class="btn ghost" id="sq-done-home" type="button">All levels</button>
+        <button class="btn ghost" id="sq-done-replay" type="button">Play again</button>
+        <button class="btn gold" id="sq-done-next" type="button">Next level &rarr;</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+'use strict';
+
+/* ---------- Mini pages shown in the preview ---------- */
+var PAGES = {
+  fruit:
+    '<h2 id="title">Fruit Stand</h2>' +
+    '<ul id="list"><li>Apple</li><li class="sale">Banana</li><li>Cherry</li><li class="sale">Date</li><li>Elderberry</li></ul>' +
+    '<p class="sale">Sale ends Friday!</p>' +
+    '<p class="note">Prices in CAD</p>' +
+    '<button id="buy" type="button">Buy</button>',
+  form:
+    '<form id="signup"><h3 id="formtitle">Join the Club</h3>' +
+    '<label>Name <input type="text" id="name" placeholder="Your name"></label>' +
+    '<label>Email <input type="email" id="email" placeholder="you@example.ca"></label>' +
+    '<label><input type="checkbox" id="news"> Send me news</label>' +
+    '<button type="submit">Join</button>' +
+    '<p id="msg"></p></form>'
+};
+var URLS = { fruit: 'fruit-stand.html', form: 'signup.html' };
+
+var LEVELS = [
+  { name: 'Find It', blurb: 'CSS selectors: #id, .class, tags, descendants and attributes.' },
+  { name: 'One or Many', blurb: 'querySelector vs querySelectorAll, NodeLists, .length and null.' },
+  { name: 'Event Match', blurb: 'Match what the user does to the right event.' },
+  { name: 'Build the Listener', blurb: 'Snap code pieces together into working listeners.' },
+  { name: 'Arrow Functions', blurb: 'Short syntax, implicit returns and callbacks.' }
+];
+
+/* ---------- Helpers ---------- */
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function label(el) { return (el.tagName === 'INPUT' || el.tagName === 'SELECT') ? '#' + el.id : el.textContent.trim().replace(/\s+/g, ' '); }
+function norm(v) {
+  if (v === null) return 'null';
+  if (v === undefined) return 'undefined';
+  if (typeof Element !== 'undefined' && v instanceof Element) return label(v);
+  if ((typeof NodeList !== 'undefined' && v instanceof NodeList) || Array.isArray(v)) {
+    return '[' + Array.prototype.map.call(v, function (x) { return (x instanceof Element) ? label(x) : String(x); }).join(', ') + ']';
+  }
+  return String(v);
+}
+function labels(pv, sel) { return Array.prototype.map.call(pv.querySelectorAll(sel), label); }
+function same(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+function runIn(pv, expr) { return new Function('document', 'return (' + expr + ');')(pv); }
+function evalCode(src) { try { return norm(new Function(src)()); } catch (e) { return 'error'; } }
+function isEvent(n) { return /^[a-z]+$/.test(n) && ('on' + n) in HTMLElement.prototype; }
+function fires(pv, sel, type, act) {
+  var el = pv.querySelector(sel), f = false, h = function () { f = true; };
+  el.addEventListener(type, h); act(el); el.removeEventListener(type, h); return f;
+}
+function q$(pv, s) { return pv.querySelector(s); }
+function hit(pv, sel) {
+  var list;
+  try { list = pv.querySelectorAll(sel); } catch (e) { return; }
+  stagger(list, 'sq-hit');
+}
+function stagger(list, cls) {
+  Array.prototype.forEach.call(list, function (el, i) {
+    setTimeout(function () { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }, i * 110);
+  });
+}
+function typeInto(pv, text, each) {
+  var inp = q$(pv, '#name'), i = 0;
+  (function step() {
+    if (!inp.isConnected) return;
+    i++; inp.value = text.slice(0, i); inp.classList.add('sq-hit');
+    if (each) each(inp.value);
+    if (i < text.length) setTimeout(step, 170);
+  })();
+}
+function setText(pv, sel, text) { var el = q$(pv, sel); el.textContent = text; el.classList.remove('sq-hit'); void el.offsetWidth; el.classList.add('sq-hit'); }
+function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+/* ---------- Questions ----------
+   For multiple choice, options[0] is the correct answer in the data (shown shuffled).
+   verify(option, freshPreview) independently checks an option by running real JavaScript where possible. */
+var Q = [];
+var curLevel = 0;
+function add(q) {
+  q.level = curLevel;
+  q.id = (curLevel + 1) + '.' + (Q.filter(function (x) { return x.level === curLevel; }).length + 1);
+  q.type = q.type || 'mc';
+  q.answer = 0;
+  Q.push(q);
+}
+function selQ(page, prompt, code, options, expect, why, hint) {
+  add({ page: page, prompt: prompt, code: code, options: options, why: why, hint: hint,
+    verify: function (o, pv) { try { return same(labels(pv, o), expect); } catch (e) { return false; } },
+    react: function (pv) { hit(pv, options[0]); } });
+}
+function exprQ(prompt, options, expect, why, hint) {
+  add({ page: 'fruit', prompt: prompt, code: 'const result = ___;', options: options, why: why, hint: hint, out: expect,
+    verify: function (o, pv) { try { return norm(runIn(pv, o)) === expect; } catch (e) { return false; } },
+    react: function (pv) {
+      var r = runIn(pv, options[0]);
+      stagger(r instanceof Element ? [r] : (r || []), 'sq-hit');
+    } });
+}
+function valQ(prompt, code, expr, options, vals, why, hint, react) {
+  add({ page: 'fruit', prompt: prompt, code: code, options: options, why: why, hint: hint, react: react,
+    verify: function (o, pv) { var v; try { v = norm(runIn(pv, expr)); } catch (e) { v = 'error'; } return vals[options.indexOf(o)] === v; },
+    outFn: function (pv) { try { return norm(runIn(pv, expr)); } catch (e) { return 'error'; } } });
+}
+function codeValQ(prompt, code, src, options, vals, why, hint) {
+  add({ page: 'fruit', prompt: prompt, code: code, options: options, why: why, hint: hint, out: evalCode(src),
+    verify: function (o) { return vals[options.indexOf(o)] === evalCode(src); },
+    react: function (pv) { setText(pv, '.note', 'Result: ' + evalCode(src)); } });
+}
+function fnQ(prompt, code, wrap, test, options, why, hint, out) {
+  add({ page: 'fruit', prompt: prompt, code: code, options: options, why: why, hint: hint, out: out,
+    verify: function (o) { try { return test(new Function(wrap.replace('OPT', function () { return o; }))()); } catch (e) { return false; } },
+    react: function (pv) { setText(pv, '.note', 'It works: ' + out); } });
+}
+function orderQ(page, prompt, chips, why, hint, verify, react) {
+  add({ type: 'order', page: page, prompt: prompt, chips: chips, why: why, hint: hint, verify: verify, react: react });
+}
+
+/* ===== Level 1: Find it ===== */
+curLevel = 0;
+selQ('fruit', 'Grab the heading with the id "title".', "document.querySelector('___')",
+  ['#title', '.title', 'title', 'h2#list'], ['Fruit Stand'],
+  'A # means id. #title matches the one element with id="title".',
+  'Ids get a special symbol in front. A dot is for classes, not ids.');
+selQ('fruit', 'Select every element with the class "sale".', "document.querySelectorAll('___')",
+  ['.sale', '#sale', 'sale', '.sale li'], ['Banana', 'Date', 'Sale ends Friday!'],
+  'A dot means class. .sale finds every element with class="sale", even the paragraph.',
+  'Classes start with a dot. With no symbol, the browser hunts for a <sale> tag.');
+selQ('fruit', 'Select all the list items.', "document.querySelectorAll('___')",
+  ['li', '.li', '#li', '<li>'], ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'],
+  'A bare tag name like li matches every <li> element on the page.',
+  'Tag selectors have no symbol and no angle brackets.');
+selQ('fruit', 'Only the sale items INSIDE the list (not the paragraph).', "document.querySelectorAll('___')",
+  ['#list .sale', '.sale', '#list.sale', 'list .sale'], ['Banana', 'Date'],
+  'A space means "inside". #list .sale finds .sale elements anywhere inside #list.',
+  'Container first, then a space, then what you want inside it. And the list is an id.');
+selQ('fruit', 'Select the third fruit (Cherry).', "document.querySelector('___')",
+  ['li:nth-child(3)', 'li:nth-child(2)', 'li[3]', 'li:third'], ['Cherry'],
+  ':nth-child(3) counts from 1, so it picks the third child.',
+  'CSS counting starts at 1, not 0, and uses :nth-child(n).');
+selQ('form', 'Select the text input (the Name box).', "document.querySelector('___')",
+  ['input[type="text"]', 'input.text', 'text', 'input#text'], ['#name'],
+  'Square brackets match attributes: input[type="text"] means an input whose type is text.',
+  'type is an attribute, so use [attribute="value"] brackets.');
+selQ('form', 'Select the button that is inside the form.', "document.querySelector('___')",
+  ['form button', 'button form', 'form.button', '#button'], ['Join'],
+  'form button means a <button> somewhere inside a <form>. Outside first, inside second.',
+  'Read descendant selectors left to right: the container, a space, then the thing inside.');
+selQ('fruit', 'Select the paragraph that has the class "note".', "document.querySelector('___')",
+  ['p.note', 'p .note', 'p#note', '.p.note'], ['Prices in CAD'],
+  'No space in p.note: it means a <p> that itself has class note.',
+  'A space would mean "inside". Here the class sits on the <p> itself.');
+
+/* ===== Level 2: One or many ===== */
+curLevel = 1;
+exprQ('Get just the FIRST sale item.',
+  ["document.querySelector('.sale')", "document.querySelectorAll('.sale')", "document.querySelector('sale')", "document.querySelector('#sale')"],
+  'Banana',
+  'querySelector returns only the first match: the Banana <li>.',
+  'One of these methods returns a single element; the other returns a whole list.');
+exprQ('Get ALL the sale items inside the list.',
+  ["document.querySelectorAll('#list .sale')", "document.querySelector('#list .sale')", "document.querySelectorAll('.sale')", "document.querySelectorAll('#list')"],
+  '[Banana, Date]',
+  'querySelectorAll returns a NodeList of every match inside #list.',
+  'You want many, and only the ones inside the list.');
+valQ('How many items does this find?', "const items = document.querySelectorAll('li');\nconsole.log(items.length); // → ___",
+  "document.querySelectorAll('li').length", ['5', '1', '4', 'undefined'], ['5', '1', '4', 'undefined'],
+  '.length counts the elements in the NodeList: 5 fruits.',
+  'Count the fruits in the preview.',
+  function (pv) { hit(pv, 'li'); });
+valQ('What is items[0]?', "const items = document.querySelectorAll('li');\nconsole.log(items[0]); // → ___",
+  "document.querySelectorAll('li')[0]", ['the Apple <li>', 'the Banana <li>', 'undefined', 'all five <li> items'],
+  ['Apple', 'Banana', 'undefined', '[Apple, Banana, Cherry, Date, Elderberry]'],
+  'NodeLists count from 0, so items[0] is the very first item: Apple.',
+  'Index 0 means the first one.',
+  function (pv) { hit(pv, '#list li:first-child'); });
+valQ('Nothing on the page has the class "nope". What do you get?', "const box = document.querySelector('.nope');\nconsole.log(box); // → ___",
+  "document.querySelector('.nope')", ['null', 'undefined', 'an empty NodeList', 'false'], ['null', 'undefined', '[]', 'false'],
+  'querySelector returns null when nothing matches. Check for null before you use it!',
+  "It's a special value that means \"no object here\".",
+  function (pv) { setText(pv, '.note', 'Nothing matched .nope'); });
+valQ('Same idea with querySelectorAll. What is the length?', "const boxes = document.querySelectorAll('.nope');\nconsole.log(boxes.length); // → ___",
+  "document.querySelectorAll('.nope').length", ['0', 'null', 'undefined', '1'], ['0', 'null', 'undefined', '1'],
+  'querySelectorAll always returns a NodeList. With no matches it is just empty, so length is 0.',
+  'It still hands you a list, just an empty one.',
+  function (pv) { setText(pv, '.note', 'Empty NodeList: length 0'); });
+add({ page: 'fruit', prompt: 'Make every fruit glow. Which method loops over the NodeList?',
+  code: "const items = document.querySelectorAll('li');\nitems.___((li) => {\n  li.classList.add('glow');\n});",
+  options: ['forEach', 'map', 'each', 'addEventListener'],
+  why: 'NodeLists have forEach, which runs your function once for each element.',
+  hint: 'A NodeList is not an array. Only one of these methods exists on a NodeList.',
+  verify: function (o) { return typeof NodeList.prototype[o] === 'function'; },
+  react: function (pv) { stagger(pv.querySelectorAll('li'), 'glow'); } });
+add({ page: 'fruit', prompt: "Why doesn't this turn the sale items red?",
+  code: "document.querySelectorAll('.sale').style.color = 'red';",
+  options: ["It's a NodeList, not one element. Loop with forEach and style each one.", "'red' has to be written in capitals.", 'You must use #sale instead of .sale.', 'style can only be changed with innerHTML.'],
+  plain: true,
+  why: "A NodeList has no style property. Fix: document.querySelectorAll('.sale').forEach((el) => { el.style.color = 'red'; });",
+  hint: 'What does querySelectorAll return: one thing, or a list of things?',
+  verify: function (o, pv) {
+    if (o.indexOf('NodeList') !== 0 && o.indexOf("It's a NodeList") !== 0) return false;
+    return runIn(pv, "document.querySelectorAll('.sale').style") === undefined && typeof runIn(pv, "document.querySelector('.sale').style") === 'object';
+  },
+  react: function (pv) { pv.querySelectorAll('.sale').forEach(function (el) { el.style.color = '#d50000'; }); hit(pv, '.sale'); } });
+
+/* ===== Level 3: Event match ===== */
+curLevel = 2;
+add({ page: 'fruit', prompt: 'Run some code when the Buy button is clicked.',
+  code: "button.addEventListener('___', () => {\n  button.textContent = 'Added!';\n});",
+  options: ['click', 'press', 'tap', 'onclick'],
+  why: "'click' fires when the button is pressed and released. Leave off the \"on\": that is only for onclick properties.",
+  hint: 'Event names are plain lowercase words with no "on" in front.',
+  verify: function (o, pv) { return fires(pv, '#buy', o, function (el) { el.click(); }); },
+  react: function (pv) { setText(pv, '#buy', 'Added!'); } });
+add({ page: 'fruit', prompt: 'Run code when the heading is DOUBLE-clicked.',
+  code: "title.addEventListener('___', () => {\n  title.textContent = 'Fresh Fruit!';\n});",
+  options: ['dblclick', 'doubleclick', 'dbclick', 'click2'],
+  why: 'The double-click event is spelled dblclick.',
+  hint: "It's a short, slightly odd abbreviation of double click.",
+  verify: function (o) { return isEvent(o); },
+  react: function (pv) { setText(pv, '#title', 'Fresh Fruit!'); } });
+add({ page: 'form', prompt: 'Update a message on EVERY keystroke in the Name box.',
+  code: "nameInput.addEventListener('___', (event) => {\n  msg.textContent = 'Hi, ' + event.target.value;\n});",
+  options: ['input', 'change', 'submit', 'blur'], manual: true,
+  why: 'input fires every time the value changes, one keystroke at a time.',
+  hint: 'change waits until you leave the box. You want the one that fires on every key.',
+  verify: function (o) { return o === 'input' && isEvent(o); },
+  react: function (pv) { typeInto(pv, 'Sam', function (v) { q$(pv, '#msg').textContent = 'Hi, ' + v; }); } });
+add({ page: 'form', prompt: 'React when the news checkbox is ticked or unticked.',
+  code: "newsBox.addEventListener('___', () => {\n  msg.textContent = newsBox.checked ? 'Subscribed' : 'Unsubscribed';\n});",
+  options: ['change', 'submit', 'mouseenter', 'blur'],
+  why: 'change fires when a choice is finished: ticking a checkbox, picking from a dropdown, or leaving a text box after editing.',
+  hint: 'Think "the value changed and the user is done choosing".',
+  verify: function (o, pv) { document.body.appendChild(pv); try { return fires(pv, '#news', o, function (el) { el.click(); }); } finally { pv.remove(); } },
+  react: function (pv) { q$(pv, '#news').checked = true; setText(pv, '#msg', 'Subscribed'); } });
+add({ page: 'form', prompt: 'Highlight the Email box when the user clicks or tabs INTO it.',
+  code: "emailInput.addEventListener('___', () => {\n  emailInput.classList.add('glow');\n});",
+  options: ['focus', 'blur', 'hover', 'change'], manual: true,
+  why: 'focus fires when an element becomes active and ready for typing.',
+  hint: 'It is the opposite of blur.',
+  verify: function (o) { return o === 'focus' && isEvent(o); },
+  react: function (pv) { q$(pv, '#email').classList.add('glow'); } });
+add({ page: 'form', prompt: 'Check the Name box when the user LEAVES it.',
+  code: "nameInput.addEventListener('___', () => {\n  if (nameInput.value === '') {\n    msg.textContent = 'Name is required';\n  }\n});",
+  options: ['blur', 'focus', 'leave', 'exit'], manual: true,
+  why: 'blur fires when an element loses focus. Great for checking a field once the user moves on.',
+  hint: 'It is the opposite of focus.',
+  verify: function (o) { return o === 'blur' && isEvent(o); },
+  react: function (pv) { hit(pv, '#name'); setText(pv, '#msg', 'Name is required'); } });
+add({ page: 'fruit', prompt: 'Show which key the user pressed.',
+  code: "document.addEventListener('keydown', (event) => {\n  title.textContent = 'You pressed ' + event.___;\n});",
+  options: ['key', 'keyName', 'button', 'value'],
+  why: "event.key holds the key as text, like 'a', 'Enter' or 'ArrowUp'.",
+  hint: "Short and simple: it's literally the name of the thing you pressed.",
+  verify: function (o) { return new KeyboardEvent('keydown', { key: 'a' })[o] === 'a'; },
+  react: function (pv) { setText(pv, '#title', 'You pressed a'); } });
+add({ page: 'form', prompt: 'Stop the form from reloading the page when it is submitted.',
+  code: "form.addEventListener('submit', (event) => {\n  event.___();\n  msg.textContent = 'Thanks for joining!';\n});",
+  options: ['preventDefault', 'stopReload', 'preventSubmit', 'cancel'],
+  why: "preventDefault() cancels the browser's normal action, which for a form is reloading the page.",
+  hint: "You're preventing the default behaviour.",
+  verify: function (o) { return typeof Event.prototype[o] === 'function'; },
+  react: function (pv) { setText(pv, '#msg', 'Thanks for joining!'); } });
+add({ page: 'fruit', prompt: 'Make the Buy button glow when the mouse moves onto it.',
+  code: "button.addEventListener('___', () => {\n  button.classList.add('glow');\n});",
+  options: ['mouseenter', 'hover', 'mousein', 'pointerstay'],
+  why: 'mouseenter fires when the pointer moves onto an element. Its partner is mouseleave.',
+  hint: 'CSS has :hover, but the JavaScript event is "mouse" plus a verb.',
+  verify: function (o) { return isEvent(o); },
+  react: function (pv) { q$(pv, '#buy').classList.add('glow'); } });
+add({ page: 'fruit', prompt: 'One listener on the whole list. What tells you which <li> was clicked?',
+  code: "list.addEventListener('click', (event) => {\n  ___.classList.add('glow');\n});",
+  options: ['event.target', 'event.list', 'event.li', 'event.key'],
+  why: 'event.target is the exact element that was clicked, even when the listener is on its parent.',
+  hint: 'The thing you aimed at is the...',
+  verify: function (o, pv) {
+    var ul = q$(pv, '#list'), li = ul.children[2], ok = false;
+    var h = function (e) { try { ok = new Function('event', 'return ' + o)(e) === li; } catch (x) { ok = false; } };
+    ul.addEventListener('click', h); li.click(); ul.removeEventListener('click', h); return ok;
+  },
+  react: function (pv) { q$(pv, '#list li:nth-child(3)').classList.add('glow'); } });
+
+/* ===== Level 4: Build the listener ===== */
+curLevel = 3;
+orderQ('fruit', 'Arrange the pieces: when Buy is clicked, change the heading.',
+  ['button', '.addEventListener(', "'click'", ', () => {', " title.textContent = 'Clicked!'; ", '});'],
+  'Element, then .addEventListener(, then the event name, then the function, then close it all with });',
+  'Start with the element you are listening to, and finish with });',
+  function (code, pv) { var b = q$(pv, '#buy'), t = q$(pv, '#title'); new Function('button', 'title', code)(b, t); b.click(); return t.textContent === 'Clicked!'; },
+  function (pv, code) { var b = q$(pv, '#buy'), t = q$(pv, '#title'); new Function('button', 'title', code)(b, t); b.click(); hit(pv, '#title'); });
+orderQ('fruit', 'Arrange the pieces to store the Buy button in a variable.',
+  ['const btn', ' = ', 'document', '.querySelector(', "'#buy'", ');'],
+  "Declare, assign, then ask the document: const btn = document.querySelector('#buy');",
+  'A declaration reads left to right: const name = value;',
+  function (code, pv) { return new Function('document', code + '\nreturn btn;')(pv).id === 'buy'; },
+  function (pv) { hit(pv, '#buy'); });
+orderQ('form', 'Arrange the pieces: stop the form from reloading the page.',
+  ['form', '.addEventListener(', "'submit'", ', (event) => {', ' event.preventDefault(); ', '});'],
+  'Listen for submit on the form, then call event.preventDefault() first thing inside the function.',
+  'The event name goes right after .addEventListener( and the function body goes inside the braces.',
+  function (code, pv) { var f = q$(pv, '#signup'); new Function('form', code)(f); var ev = new Event('submit', { cancelable: true }); f.dispatchEvent(ev); return ev.defaultPrevented; },
+  function (pv) { setText(pv, '#msg', 'Sent without reloading!'); });
+orderQ('fruit', 'Arrange the pieces: make every fruit glow.',
+  ["document.querySelectorAll('li')", '.forEach(', '(li) => {', " li.classList.add('glow'); ", '});'],
+  'Get the NodeList, call .forEach( and give it an arrow function that handles one li at a time.',
+  'First find the items, then loop over them, then say what to do with each.',
+  function (code, pv) { new Function('document', code)(pv); return Array.prototype.every.call(pv.querySelectorAll('li'), function (li) { return li.classList.contains('glow'); }); },
+  function (pv) { stagger(pv.querySelectorAll('li'), 'glow'); });
+orderQ('form', 'Arrange the pieces: copy what the user types into the message.',
+  ['nameInput', '.addEventListener(', "'input'", ', (event) => {', ' msg.textContent = event.target.value; ', '});'],
+  'The input event fires on every keystroke, and event.target.value is what is in the box right now.',
+  'Same shape as every listener: element, .addEventListener(, event, function, });',
+  function (code, pv) { var i = q$(pv, '#name'), m = q$(pv, '#msg'); new Function('nameInput', 'msg', code)(i, m); i.value = 'Sam'; i.dispatchEvent(new Event('input')); return m.textContent === 'Sam'; },
+  function (pv) { typeInto(pv, 'Sam', function (v) { q$(pv, '#msg').textContent = v; }); });
+(function () {
+  var code = "button.addEventListener('click', () => {\n  title.textContent = 'Hi!';\n}___";
+  add({ page: 'fruit', prompt: 'Which piece correctly finishes this listener?', code: code,
+    options: [');', '};', '}', ';)'],
+    why: 'The } closes the arrow function, then ) closes addEventListener( and ; ends the statement.',
+    hint: 'Count the brackets: one ( is still open from addEventListener(.',
+    verify: function (o) { try { new Function('button', 'title', code.replace('___', function () { return o; })); return true; } catch (e) { return false; } },
+    react: function (pv) { setText(pv, '#title', 'Hi!'); } });
+})();
+add({ page: 'fruit', prompt: 'Which method name is spelled correctly?',
+  code: "button.___('click', () => {\n  button.textContent = 'Yes!';\n});",
+  options: ['addEventListener', 'addEventListner', 'onEvent', 'listen'],
+  why: 'addEventListener: add, Event, Listener. Watch the "e" in Listener; typos here fail silently or throw.',
+  hint: 'Spell out "add event listener" carefully.',
+  verify: function (o) { return typeof HTMLElement.prototype[o] === 'function'; },
+  react: function (pv) { setText(pv, '#buy', 'Yes!'); } });
+add({ page: 'fruit', prompt: 'Hand the function to the listener so it runs only on click.',
+  code: "function sayHi() {\n  title.textContent = 'Hi!';\n}\nbutton.addEventListener('click', ___);",
+  options: ['sayHi', 'sayHi()', "'sayHi'", 'function'],
+  why: 'Pass the function itself (sayHi). Writing sayHi() would call it right away, before any click.',
+  hint: 'Brackets () mean "run it now". You want to run it later.',
+  verify: function (o) {
+    try {
+      var b = document.createElement('button');
+      return new Function('button', "let n = 0;\nfunction sayHi() { n++; }\nbutton.addEventListener('click', " + o + ");\nconst before = n;\nbutton.click();\nreturn before === 0 && n === 1;")(b);
+    } catch (e) { return false; }
+  },
+  react: function (pv) { setText(pv, '#title', 'Hi!'); } });
+
+/* ===== Level 5: Arrow functions ===== */
+curLevel = 4;
+fnQ('Which arrow function does the same job?', 'function double(n) {\n  return n * 2;\n}',
+  'OPT\nreturn double(4);', function (r) { return r === 8; },
+  ['const double = n => n * 2;', 'const double = n => { n * 2 };', 'const double => n * 2;', 'const double = (n) -> n * 2;'],
+  'One expression and no braces means the arrow returns it automatically (implicit return).',
+  'Braces need a return statement. And arrows use =>, not ->.', 'double(4) → 8');
+codeValQ('What does add(2, 3) return?', 'const add = (a, b) => { a + b };\nadd(2, 3); // → ___',
+  'const add = (a, b) => { a + b };\nreturn add(2, 3);',
+  ['undefined', '5', '"23"', 'an error'], ['undefined', '5', '23', 'error'],
+  'Curly braces make a function body, and a body needs return. No return means undefined.',
+  'Look closely at the curly braces. Is anything actually returned?');
+fnQ('Fix it so add(2, 3) returns 5.', 'const add = ___;',
+  'const add = OPT;\nreturn add(2, 3);', function (r) { return r === 5; },
+  ['(a, b) => a + b', '(a, b) => { a + b; }', '(a, b) => return a + b', 'a, b => a + b'],
+  'Drop the braces for an implicit return. Two or more parameters still need parentheses.',
+  'Either put return inside braces or remove the braces. Only one choice here does that.', 'add(2, 3) → 5');
+fnQ('With exactly one parameter you can skip the parentheses. Which version works?', 'function sq(x) {\n  return x * x;\n}',
+  'OPT\nreturn sq(3);', function (r) { return r === 9; },
+  ['const sq = x => x * x;', 'const sq = => x * x;', 'const sq = x, => x * x;', 'const sq = {x} => x * x;'],
+  'One parameter? The parentheses are optional: x => x * x.',
+  'The parameter name still has to be there, just without the ( ).', 'sq(3) → 9');
+fnQ('Return an object from an arrow function.', "const makeUser = name => ___;\nmakeUser('Ava'); // → { name: 'Ava' }",
+  "const makeUser = name => OPT;\nconst r = makeUser('Ava');\nreturn r ? r.name : r;", function (r) { return r === 'Ava'; },
+  ['({ name: name })', '{ name: name }', '[name: name]', '( name: name )'],
+  'Wrap the object in ( ). Otherwise JavaScript reads the { } as a function body, not an object.',
+  'Bare curly braces right after => look like a function body.', "makeUser('Ava').name → Ava");
+add({ page: 'fruit', prompt: 'Pass a callback to forEach to make every fruit glow.',
+  code: "document.querySelectorAll('li').forEach(___);",
+  options: ["li => li.classList.add('glow')", "li.classList.add('glow')", "=> li.classList.add('glow')", 'forEach(li)'],
+  why: 'forEach calls your arrow function once per element, passing each <li> in as li.',
+  hint: 'forEach needs a function, with a parameter to receive each element.',
+  verify: function (o, pv) {
+    try { new Function('document', "document.querySelectorAll('li').forEach(" + o + ');')(pv); } catch (e) { return false; }
+    return Array.prototype.every.call(pv.querySelectorAll('li'), function (li) { return li.classList.contains('glow'); });
+  },
+  react: function (pv) { stagger(pv.querySelectorAll('li'), 'glow'); } });
+fnQ('No parameters at all? Which arrow version works?', "function greet() {\n  return 'Hi!';\n}",
+  'OPT\nreturn greet();', function (r) { return r === 'Hi!'; },
+  ["const greet = () => 'Hi!';", "const greet = => 'Hi!';", "const greet = _ -> 'Hi!';", "const greet() => 'Hi!';"],
+  'With no parameters you still need empty parentheses: () =>',
+  'Something has to sit before the arrow, even if it is empty.', 'greet() → Hi!');
+codeValQ('What ends up in tens?', 'const tens = [1, 2, 3].map(n => n * 10);\nconsole.log(tens); // → ___',
+  'return [1, 2, 3].map(n => n * 10);',
+  ['[10, 20, 30]', '[1, 2, 3]', '60', 'undefined'], ['[10, 20, 30]', '[1, 2, 3]', '60', 'undefined'],
+  'map runs the arrow on each item and builds a NEW array from the returned values.',
+  'map transforms each item and keeps them all, in a new array.');
+
+/* ---------- Storage ---------- */
+var KEY = 'selectorQuest.v1';
+function load() { try { var d = JSON.parse(localStorage.getItem(KEY)); return (d && typeof d === 'object') ? d : {}; } catch (e) { return {}; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(DATA)); } catch (e) { /* storage blocked: ignore */ } }
+var DATA = load();
+DATA.levels = DATA.levels || {};
+DATA.lightning = DATA.lightning || 0;
+
+/* ---------- State + elements ---------- */
+var S = { screen: 'home', mode: null, level: 0, queue: [], qi: 0, score: 0, streak: 0, mistakes: 0, qMistakes: 0,
+  answered: false, placed: [], order: [], lastStars: 0, correct: 0, timeLeft: 0, timer: null, adv: null };
+function $(id) { return document.getElementById(id); }
+var E = {
+  home: $('sq-home'), play: $('sq-play'), done: $('sq-done'), levels: $('sq-levels'),
+  score: $('sq-score'), streak: $('sq-streak'), scorePill: $('sq-score-pill'), streakPill: $('sq-streak-pill'),
+  timer: $('sq-timer'), timerPill: $('sq-timer-pill'), bar: $('sq-bar'), barwrap: $('sq-barwrap'),
+  card: $('sq-card'), tag: $('sq-tag'), count: $('sq-count'), prompt: $('sq-prompt'), url: $('sq-url'),
+  pv: $('sq-preview'), cons: $('sq-console'), code: $('sq-code'), opts: $('sq-opts'),
+  order: $('sq-order'), line: $('sq-line'), bank: $('sq-bank'), check: $('sq-check'), clear: $('sq-clear'),
+  fb: $('sq-feedback'), next: $('sq-next'),
+  dTitle: $('sq-done-title'), dStars: $('sq-done-stars'), dScore: $('sq-done-score'), dMsg: $('sq-done-msg'), dBadge: $('sq-done-badge'),
+  dNext: $('sq-done-next'), dReplay: $('sq-done-replay'), dHome: $('sq-done-home')
+};
+E.pv.addEventListener('submit', function (e) { e.preventDefault(); });
+
+/* ---------- HTML source panel (built from the same PAGES string the preview renders) ---------- */
+var SRC_BLOCK = { h2: 1, h3: 1, ul: 1, li: 1, p: 1, button: 1, form: 1, label: 1 };
+var SRC_NEST = { ul: 1, form: 1 };
+function srcHTML(markup) {
+  var out = '', depth = 0, n = 0, stack = [];
+  var re = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:\s+[^\s=>]+(?:="[^"]*")?)*)\s*>|[^<]+/g, m;
+  function nl() { return out ? '\n' + new Array(depth + 1).join('  ') : ''; }
+  while ((m = re.exec(markup))) {
+    if (!m[2]) { out += '<span class="tx">' + esc(m[0]) + '</span>'; continue; }
+    var name = m[2].toLowerCase();
+    if (m[1]) {
+      var i = stack.pop();
+      if (SRC_NEST[name]) { depth--; out += nl(); }
+      out += '<span class="stag" data-i="' + i + '"><span class="t">&lt;/' + name + '&gt;</span></span>';
+      continue;
+    }
+    if (SRC_BLOCK[name]) out += nl();
+    var attrs = m[3].replace(/\s+([^\s=>]+)(?:="([^"]*)")?/g, function (all, an, av) {
+      var cls = an === 'id' ? ' aid' : an === 'class' ? ' acl' : '';
+      var val = av === undefined ? '' : '=<span class="av">"' + esc(av) + '"</span>';
+      return ' <span class="an' + cls + '">' + esc(an) + (cls ? val.replace('class="av"', 'class="av' + cls + '"') : val) + '</span>';
+    });
+    out += '<span class="stag" data-i="' + n + '"><span class="t">&lt;' + name + '</span>' + attrs + '<span class="t">&gt;</span></span>';
+    if (name !== 'input' && name !== 'br' && name !== 'img') { stack.push(n); if (SRC_NEST[name]) depth++; }
+    n++;
+  }
+  return out;
+}
+function showPage(page) {
+  E.pv.innerHTML = PAGES[page];
+  Array.prototype.forEach.call(E.pv.querySelectorAll('*'), function (el, i) { el.setAttribute('data-sq-i', i); });
+  E.src.innerHTML = srcHTML(PAGES[page]);
+}
+function syncSrc() {
+  var on = {};
+  Array.prototype.forEach.call(E.pv.querySelectorAll('.sq-hit[data-sq-i], .glow[data-sq-i]'), function (el) { on[el.getAttribute('data-sq-i')] = 1; });
+  Array.prototype.forEach.call(E.src.querySelectorAll('.stag'), function (t) {
+    var want = !!on[t.getAttribute('data-i')];
+    if (want !== t.classList.contains('on')) t.classList.toggle('on', want);
+  });
+}
+E.src = $('sq-src');
+if (window.MutationObserver) new MutationObserver(syncSrc).observe(E.pv, { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+function cur() { return S.queue[S.qi]; }
+function showScreen(name) {
+  ['home', 'play', 'done'].forEach(function (n) { E[n].hidden = n !== name; });
+  S.screen = name;
+  window.scrollTo(0, 0);
+}
+function bump(pill) { pill.classList.remove('bump'); void pill.offsetWidth; pill.classList.add('bump'); }
+function hud() {
+  E.score.textContent = S.score;
+  E.streak.textContent = S.streak;
+  E.timerPill.hidden = S.mode !== 'lightning' || S.screen !== 'play';
+  E.timer.textContent = S.timeLeft;
+  E.timerPill.classList.toggle('warn', S.timeLeft <= 10);
+  var pct = S.mode === 'lightning' ? (S.timeLeft / 60) * 100 : (S.qi / S.queue.length) * 100;
+  E.bar.style.width = pct + '%';
+  E.barwrap.setAttribute('aria-valuenow', Math.round(pct));
+}
+function starsHTML(n, total) {
+  var s = '';
+  for (var i = 0; i < (total || 3); i++) s += '<span class="' + (i < n ? 'on' : '') + '">★</span>';
+  return s;
+}
+function stopTimers() { clearInterval(S.timer); S.timer = null; clearTimeout(S.adv); S.adv = null; }
+
+/* ---------- Home ---------- */
+function renderHome() {
+  stopTimers();
+  S.mode = null;
+  var html = '';
+  LEVELS.forEach(function (L, i) {
+    var p = DATA.levels[i] || {};
+    var n = Q.filter(function (q) { return q.level === i; }).length;
+    html += '<button class="lvl" type="button" data-level="' + i + '"><span class="num">Level ' + (i + 1) + '</span>' +
+      '<h3>' + esc(L.name) + '</h3><p>' + esc(L.blurb) + '</p>' +
+      '<span class="meta"><span class="stars" aria-label="' + (p.stars || 0) + ' of 3 stars">' + starsHTML(p.stars || 0) + '</span>' +
+      '<span>' + n + ' questions' + (p.best ? ' · best ' + p.best : '') + '</span></span></button>';
+  });
+  html += '<button class="lvl lightning" type="button" data-level="lightning"><span class="num">Bonus</span>' +
+    '<h3>Lightning Round</h3><p>60 seconds. Random questions from every level. How far can you get?</p>' +
+    '<span class="meta"><span>Best: <b>' + (DATA.lightning || 0) + '</b></span><span>60 s</span></span></button>';
+  E.levels.innerHTML = html;
+  S.score = 0; S.streak = 0;
+  showScreen('home');
+  hud();
+}
+E.levels.addEventListener('click', function (e) {
+  var b = e.target.closest('.lvl');
+  if (!b) return;
+  if (b.dataset.level === 'lightning') startLightning(); else startLevel(+b.dataset.level);
+});
+
+/* ---------- Start modes ---------- */
+function resetRun() { S.score = 0; S.streak = 0; S.mistakes = 0; S.correct = 0; S.qi = 0; }
+function startLevel(L) {
+  stopTimers();
+  S.mode = 'level'; S.level = L; resetRun();
+  S.queue = Q.filter(function (q) { return q.level === L; });
+  showScreen('play');
+  renderQ();
+}
+function startLightning() {
+  stopTimers();
+  S.mode = 'lightning'; resetRun();
+  S.queue = shuffle(Q.filter(function (q) { return q.type === 'mc'; }));
+  S.timeLeft = 60;
+  showScreen('play');
+  renderQ();
+  S.timer = setInterval(function () {
+    S.timeLeft--;
+    hud();
+    if (S.timeLeft <= 0) endLightning();
+  }, 1000);
+}
+
+/* ---------- Render a question ---------- */
+function codeHTML(code, fill) {
+  return code.split('___').map(function (part) {
+    return esc(part).replace(/(\/\/.*$)|('[^'\n]*')/gm, function (m, cm, str) {
+      return cm ? '<span class="cm">' + cm + '</span>' : '<span class="str">' + str + '</span>';
+    });
+  }).join(fill === undefined ? '<span class="blank">???</span>' : '<span class="blank filled">' + esc(fill) + '</span>');
+}
+/* Variables used in question code get a real declaration shown above it,
+   matched to an id that exists in that question's page (checked by SQ.checkDecls). */
+var VAR_SEL = { button: '#buy', title: '#title', list: '#list', nameInput: '#name', emailInput: '#email',
+  newsBox: '#news', msg: '#msg', form: '#signup' };
+function declsFor(q) {
+  if (q.decls) return q.decls;
+  var src = (q.type === 'order' ? q.chips.join('') : q.code)
+    .replace(/'[^'\n]*'|"[^"\n]*"/g, "''").replace(/\/\/.*$/gm, '');
+  var found = [], re = /(^|[^.\w$])([A-Za-z_$][\w$]*)\b/g, m;
+  while ((m = re.exec(src))) {
+    var v = m[2];
+    if (VAR_SEL[v] && found.indexOf(v) === -1 && !new RegExp('\\b(const|let|var|function)\\s+' + v + '\\b').test(src)) found.push(v);
+  }
+  q.decls = found.map(function (v) { return { name: v, sel: VAR_SEL[v], line: 'const ' + v + " = document.querySelector('" + VAR_SEL[v] + "');" }; });
+  return q.decls;
+}
+function declHTML(q) {
+  var d = declsFor(q);
+  if (!d.length) return '';
+  return '<span class="given">// given:</span>\n' + d.map(function (x) { return codeHTML(x.line, ''); }).join('\n') + '\n\n';
+}
+function renderQ() {
+  if (S.mode === 'lightning' && S.qi >= S.queue.length) {
+    S.queue = S.queue.concat(shuffle(Q.filter(function (q) { return q.type === 'mc'; })));
+  }
+  var q = cur();
+  S.answered = false; S.qMistakes = 0; S.placed = [];
+  E.tag.textContent = S.mode === 'lightning' ? 'Lightning · ' + LEVELS[q.level].name : 'Level ' + (q.level + 1) + ' · ' + LEVELS[q.level].name;
+  E.count.textContent = S.mode === 'lightning' ? S.correct + ' correct' : 'Question ' + (S.qi + 1) + ' of ' + S.queue.length;
+  E.prompt.textContent = q.prompt;
+  E.url.textContent = URLS[q.page];
+  showPage(q.page);
+  E.cons.hidden = true;
+  E.fb.className = 'feedback'; E.fb.innerHTML = '';
+  E.next.hidden = true;
+  if (q.type === 'order') {
+    E.code.hidden = true; E.opts.hidden = true; E.order.hidden = false;
+    E.line.classList.remove('done');
+    var fx = $('sq-fixed'), dl = declsFor(q);
+    fx.hidden = !dl.length;
+    fx.innerHTML = dl.length ? '<span class="given">// given (already written for you):</span>\n' + dl.map(function (x) { return codeHTML(x.line, ''); }).join('\n') : '';
+    var idx = q.chips.map(function (c, i) { return i; }), order;
+    do { order = shuffle(idx); } while (order.every(function (v, i) { return v === i; }));
+    S.order = order;
+    drawChips();
+  } else {
+    E.code.hidden = false; E.opts.hidden = false; E.order.hidden = true;
+    E.code.innerHTML = declHTML(q) + codeHTML(q.code);
+    var html = '';
+    shuffle(q.options.map(function (o, i) { return i; })).forEach(function (oi, n) {
+      html += '<button class="opt" type="button" data-opt="' + oi + '"><kbd>' + (n + 1) + '</kbd><span class="txt' + (q.plain ? ' plain' : '') + '">' + esc(q.options[oi]) + '</span></button>';
+    });
+    E.opts.innerHTML = html;
+  }
+  hud();
+}
+E.opts.addEventListener('click', function (e) {
+  var b = e.target.closest('.opt');
+  if (b) pick(+b.dataset.opt);
+});
+
+/* ---------- Answering ---------- */
+function pick(i) {
+  if (S.answered || S.screen !== 'play') return;
+  var q = cur();
+  var btn = E.opts.querySelector('[data-opt="' + i + '"]');
+  if (!btn || btn.disabled) return;
+  if (i === q.answer) {
+    btn.classList.add('right');
+    E.code.innerHTML = declHTML(q) + codeHTML(q.code, q.options[i]);
+    Array.prototype.forEach.call(E.opts.children, function (b) { b.disabled = true; });
+    success(q);
+  } else {
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    fail(q);
+  }
+}
+function success(q) {
+  S.answered = true;
+  var first = S.qMistakes === 0;
+  if (first) S.streak++;
+  var pts = (first ? 100 : S.qMistakes === 1 ? 50 : 25) + (first ? Math.min(S.streak, 5) * 10 : 0);
+  S.score += pts; S.correct++;
+  try {
+    if (q.type === 'order') q.react(E.pv, q.chips.join('')); else if (q.react) q.react(E.pv);
+  } catch (err) { if (window.console) console.warn('react failed', q.id, err); }
+  var out = q.out !== undefined ? q.out : (q.outFn ? q.outFn(E.pv) : null);
+  if (out !== null) { E.cons.textContent = '> ' + out; E.cons.hidden = false; }
+  var cheer = ['Correct!', 'Nice!', 'Got it!', 'Yes!', 'Spot on!', 'Nailed it!'][Math.floor(Math.random() * 6)];
+  E.fb.className = 'feedback good';
+  E.fb.innerHTML = esc(cheer) + ' +' + pts + (S.streak >= 3 && first ? ' · ' + S.streak + ' in a row!' : '') +
+    '<span class="why">' + esc(q.why) + '</span>';
+  bump(E.scorePill); if (first) bump(E.streakPill);
+  hud();
+  if (S.mode === 'lightning') {
+    E.count.textContent = S.correct + ' correct';
+    S.adv = setTimeout(next, 1100);
+  } else {
+    E.next.hidden = false;
+    E.next.textContent = S.qi + 1 >= S.queue.length ? 'Finish level →' : 'Next →';
+    try { E.next.focus({ preventScroll: true }); } catch (e) { E.next.focus(); }
+  }
+}
+function fail(q) {
+  S.qMistakes++; S.mistakes++; S.streak = 0;
+  E.card.classList.remove('shake'); void E.card.offsetWidth; E.card.classList.add('shake');
+  E.fb.className = 'feedback bad';
+  E.fb.innerHTML = 'Not quite. <span class="why">' + esc(q.hint) + '</span>';
+  hud();
+}
+function next() {
+  clearTimeout(S.adv); S.adv = null;
+  if (S.screen !== 'play') return;
+  S.qi++;
+  if (S.mode === 'level' && S.qi >= S.queue.length) finishLevel(); else renderQ();
+}
+E.next.addEventListener('click', next);
+
+/* ---------- Ordering chips ---------- */
+function drawChips() {
+  var q = cur();
+  E.line.innerHTML = '';
+  E.bank.innerHTML = '';
+  S.placed.forEach(function (ci, pos) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip placed'; b.dataset.ci = ci; b.dataset.pos = pos;
+    b.textContent = q.chips[ci].trim();
+    b.setAttribute('aria-label', 'Remove ' + q.chips[ci].trim());
+    if (S.answered) b.disabled = true;
+    E.line.appendChild(b);
+  });
+  var n = 0;
+  S.order.forEach(function (ci) {
+    if (S.placed.indexOf(ci) !== -1) return;
+    n++;
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.dataset.ci = ci;
+    b.innerHTML = '<span class="k">' + (n <= 9 ? n : '') + '</span>' + esc(q.chips[ci].trim());
+    E.bank.appendChild(b);
+  });
+}
+function place(ci) {
+  if (S.answered || S.placed.indexOf(ci) !== -1) return;
+  S.placed.push(ci);
+  drawChips();
+  var f = E.bank.querySelector('.chip'); if (f && document.activeElement && document.activeElement.classList.contains('chip')) f.focus();
+}
+function unplace(pos) {
+  if (S.answered) return;
+  S.placed.splice(pos, 1);
+  drawChips();
+}
+E.bank.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (b) place(+b.dataset.ci); });
+E.line.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (b) unplace(+b.dataset.pos); });
+E.clear.addEventListener('click', function () { if (!S.answered) { S.placed = []; drawChips(); } });
+function checkOrder() {
+  if (S.answered || S.screen !== 'play') return;
+  var q = cur();
+  var left = q.chips.length - S.placed.length;
+  if (left > 0) {
+    E.fb.className = 'feedback bad';
+    E.fb.innerHTML = 'Use all the pieces first. <span class="why">' + left + ' piece' + (left > 1 ? 's' : '') + ' still waiting below.</span>';
+    return;
+  }
+  var bad = -1;
+  S.placed.forEach(function (ci, pos) { if (bad === -1 && ci !== pos) bad = pos; });
+  if (bad === -1) {
+    drawChips();
+    E.line.classList.add('done');
+    E.code.hidden = false;
+    E.code.innerHTML = declHTML(q) + codeHTML(q.chips.join(''));
+    success(q);
+  } else {
+    var chip = E.line.children[bad];
+    if (chip) chip.classList.add('bad', 'shake');
+    fail(q);
+    E.fb.innerHTML = 'Not quite. The first piece out of place is highlighted. <span class="why">' + esc(q.hint) + '</span>';
+  }
+}
+E.check.addEventListener('click', checkOrder);
+
+/* ---------- Finish ---------- */
+function confetti(n) {
+  var box = document.createElement('div');
+  box.className = 'confetti';
+  var colours = ['#f5b301', '#7ef0c6', '#ff6b6b', '#6b6fd6', '#4fc3f7', '#ffffff', '#ff9ff3'];
+  for (var i = 0; i < (n || 110); i++) {
+    var p = document.createElement('i');
+    p.style.left = (Math.random() * 100) + 'vw';
+    p.style.background = colours[i % colours.length];
+    p.style.setProperty('--dx', (Math.random() * 200 - 100) + 'px');
+    p.style.setProperty('--r', (Math.random() * 1080 - 540) + 'deg');
+    p.style.animationDuration = (1.8 + Math.random() * 1.8) + 's';
+    p.style.animationDelay = (Math.random() * 0.4) + 's';
+    if (Math.random() < 0.4) { p.style.width = '10px'; p.style.height = '10px'; p.style.borderRadius = '50%'; }
+    box.appendChild(p);
+  }
+  document.body.appendChild(box);
+  setTimeout(function () { box.remove(); }, 4200);
+}
+function finishLevel() {
+  stopTimers();
+  var stars = S.mistakes === 0 ? 3 : S.mistakes <= 2 ? 2 : 1;
+  S.lastStars = stars;
+  var p = DATA.levels[S.level] || { stars: 0, best: 0 };
+  var newBest = S.score > (p.best || 0);
+  p.stars = Math.max(p.stars || 0, stars);
+  p.best = Math.max(p.best || 0, S.score);
+  DATA.levels[S.level] = p; save();
+  E.dTitle.textContent = 'Level ' + (S.level + 1) + ' complete!';
+  E.dStars.innerHTML = starsHTML(stars);
+  E.dStars.setAttribute('aria-label', stars + ' of 3 stars');
+  E.dScore.textContent = S.score + ' pts';
+  E.dMsg.textContent = S.mistakes === 0 ? 'Perfect run: no mistakes at all. Three stars!' :
+    S.mistakes + ' mistake' + (S.mistakes > 1 ? 's' : '') + ' this time. ' + (stars === 2 ? 'Two or fewer earns two stars. ' : '') + 'Play again for three stars?';
+  E.dBadge.innerHTML = newBest ? '<span class="badge">New best for this level!</span>' : '';
+  E.dNext.hidden = S.level >= LEVELS.length - 1;
+  E.dNext.textContent = 'Next level →';
+  showScreen('done');
+  hud();
+  confetti(stars === 3 ? 140 : 80);
+  try { (E.dNext.hidden ? E.dReplay : E.dNext).focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+}
+function endLightning() {
+  if (S.mode !== 'lightning') return;
+  stopTimers();
+  S.timeLeft = Math.max(0, S.timeLeft);
+  var newBest = S.score > (DATA.lightning || 0);
+  if (newBest) { DATA.lightning = S.score; save(); }
+  S.lastStars = 0;
+  E.dTitle.textContent = "Time's up!";
+  E.dStars.innerHTML = '';
+  E.dScore.textContent = S.score + ' pts';
+  E.dMsg.textContent = S.correct + ' correct answer' + (S.correct === 1 ? '' : 's') + ' in 60 seconds. Best: ' + DATA.lightning + '.';
+  E.dBadge.innerHTML = newBest && S.score > 0 ? '<span class="badge">New Lightning record!</span>' : '';
+  E.dNext.hidden = true;
+  showScreen('done');
+  hud();
+  if (S.score > 0) confetti(newBest ? 140 : 60);
+  try { E.dReplay.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+}
+E.dNext.addEventListener('click', function () { startLevel(Math.min(S.level + 1, LEVELS.length - 1)); });
+E.dReplay.addEventListener('click', function () { if (S.mode === 'lightning') startLightning(); else startLevel(S.level); });
+E.dHome.addEventListener('click', renderHome);
+$('sq-quit').addEventListener('click', renderHome);
+$('sq-logo').addEventListener('click', renderHome);
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function (e) {
+  if (S.screen !== 'play' || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.target.closest && e.target.closest('#sq-preview')) return;
+  var q = cur();
+  if (/^[1-9]$/.test(e.key)) {
+    var n = +e.key - 1, b;
+    if (q.type === 'mc') { b = E.opts.children[n]; if (b) { e.preventDefault(); pick(+b.dataset.opt); } }
+    else if (!S.answered) { b = E.bank.children[n]; if (b) { e.preventDefault(); place(+b.dataset.ci); } }
+  } else if (e.key === 'Backspace' && q.type === 'order' && !S.answered && S.placed.length) {
+    e.preventDefault(); unplace(S.placed.length - 1);
+  } else if (e.key === 'Enter') {
+    if (e.target.tagName === 'BUTTON') return;
+    if (S.answered && S.mode === 'level') { e.preventDefault(); next(); }
+    else if (q.type === 'order' && !S.answered) { e.preventDefault(); checkOrder(); }
+  }
+});
+
+/* Small hook so teachers (and tests) can drive the game from the console. */
+window.SQ = {
+  questions: Q, pages: PAGES, state: S, current: cur, next: next,
+  startLevel: startLevel, startLightning: startLightning, endLightning: endLightning, home: renderHome,
+  srcHTML: srcHTML, syncSrc: syncSrc, declsFor: declsFor,
+  makePreview: function (page) { var d = document.createElement('div'); d.innerHTML = PAGES[page]; return d; }
+};
+
+renderHome();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+/* Day 14, demo 4: the same to-do list with real CSS. */
+:root {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --accent: #2563eb;
+  --danger: #dc2626;
+  --border: #e2e8f0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgb(15 23 42 / 0.08);
+}
+
+h1 { margin: 0 0 1rem; font-size: 1.5rem; }
+
+/* Form: label on top, input and button side by side */
+#todo-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .25rem .5rem;
+  margin-bottom: 1rem;
+}
+#todo-form label { grid-column: 1 / -1; font-size: .875rem; color: var(--muted); }
+
+#todo-input {
+  width: 100%;
+  padding: .6rem .75rem;
+  font-size: 1rem;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+}
+#todo-input:focus { border-color: var(--accent); }
+#todo-input.invalid { border-color: var(--danger); }
+
+.error-message { color: var(--danger); font-size: .85rem; min-height: 1.2em; margin-top: .25rem; }
+
+#todo-form button {
+  align-self: start;
+  padding: .6rem 1.1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+#todo-form button:hover { filter: brightness(1.1); }
+
+/* The list */
+#todo-list { list-style: none; margin: 0; padding: 0; }
+
+#todo-list li {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .6rem .25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+#todo-list li span { flex: 1; }
+
+#todo-list input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
+
+#todo-list li.done span { text-decoration: line-through; color: var(--muted); }
+
+#todo-list li button {
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: .1rem .4rem;
+}
+#todo-list li button:hover { color: white; background: var(--danger); }

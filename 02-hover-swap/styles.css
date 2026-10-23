@@ -1,0 +1,15 @@
+body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+#play-area { position: relative; height: 320px; border: 2px dashed #aaa; border-radius: 12px; }
+.catch-btn {
+  position: absolute;
+  padding: .6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+#btn-a { left: 40px; top: 40px; }
+#btn-b { right: 40px; bottom: 40px; }
+.hidden { display: none; }

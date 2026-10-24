@@ -15,9 +15,6 @@ nameInput.addEventListener('input', (event) => {
   show(`input → value is "${event.target.value}"`);
 });
 
-nameInput.addEventListener('keydown', (event) => {
-  alert(event.key);           // what was pressed
-});
 
 // focus / blur: when the box gains or loses the cursor
 nameInput.addEventListener('focus', () => {

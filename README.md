@@ -12,6 +12,11 @@ Every demo from class, one folder each. New demos are added after each class.
 | `06-tic-tac-toe` | Events and game state |
 | `07-input-events` | `input`, `focus`/`blur`, `change`, `keydown` |
 | `08-login-form` | `submit`, `preventDefault`, validation messages |
+| `08-login-form/step1…step4` | The login form built up in four steps: capture, basic check, check functions, validator |
+| `08a-login-simple` | A minimal login form |
+| `08b-login-as-you-type` | Validating as you type |
+| `08c-login-password` | Password rules |
+| `08d-login-functions` | Login checks split into functions |
 | `09-template-cards` | `<template>` and `cloneNode` |
 | `10-practice-dom-events` | 25-question practice set (`QUESTIONS.md`, `WALKTHROUGH.md`) |
 | `11-selector-quest` | Selector Quest game (also on [KaktusLive Games](https://kaktuslive.dev/games)) |
@@ -23,7 +28,7 @@ Every demo from class, one folder each. New demos are added after each class.
 **Option 2: clone with Git** (recommended: you can pull new demos after each class):
 
 ```bash
-git clone <this repository's URL>
+git clone https://github.com/NAIT-SDEV1150/sdev1150-f26-demos.git
 cd sdev1150-f26-demos
 ```
 

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo 14: templates deep dive</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Templates deep dive</h1>
+    <p class="subtitle">Front-end development: JavaScript building HTML inside the browser, one reusable piece at a time.</p>
+  </header>
+
+  <!-- ===================== Panel 1: a template is inert ===================== -->
+  <section id="panel-inert" class="panel">
+    <h2>1. A template is inert (and its fragment empties)</h2>
+    <p>The <code>&lt;template id="hello-template"&gt;</code> below is in the HTML, but you can't see it. Open the Elements panel to find it.</p>
+    <div class="buttons">
+      <button type="button" id="btn-inspect">Inspect the template</button>
+      <button type="button" id="btn-stamp">Stamp one copy</button>
+      <button type="button" id="btn-clear-stamps">Clear copies</button>
+    </div>
+    <div id="stamp-area" class="stamp-area"></div>
+    <pre id="inspect-log" class="log" aria-live="polite">Click a button. The log explains what the browser did.</pre>
+
+    <template id="hello-template">
+      <p class="hello">Hello from a <strong>template</strong>! Copy number <span class="copy-number"></span>.</p>
+      <img class="hello-img" src="images/avatar-1.svg" alt="A blue avatar" width="40" height="40">
+    </template>
+  </section>
+
+  <!-- ===================== Panel 2: innerHTML vs textContent ===================== -->
+  <section id="panel-xss" class="panel">
+    <h2>2. Why not innerHTML strings? (XSS)</h2>
+    <p>Pretend this "name" came from a user. It contains HTML with code hidden in it.</p>
+    <label for="xss-input">User's "name"</label>
+    <input id="xss-input" type="text" autocomplete="off">
+    <div class="buttons">
+      <button type="button" id="btn-unsafe" class="danger">Render with innerHTML (unsafe)</button>
+      <button type="button" id="btn-safe" class="safe">Render with template + textContent (safe)</button>
+    </div>
+    <div class="xss-row">
+      <div>
+        <h3>innerHTML result</h3>
+        <div id="unsafe-out" class="out-box"></div>
+      </div>
+      <div>
+        <h3>textContent result</h3>
+        <div id="safe-out" class="out-box"></div>
+      </div>
+    </div>
+    <p id="xss-status" class="status">No code has run yet.</p>
+
+    <template id="greeting-template">
+      <p class="greeting">Welcome, <b class="greeting-name"></b>!</p>
+    </template>
+  </section>
+
+  <!-- ===================== Panel 3: state + render + delegation ===================== -->
+  <section id="panel-contacts" class="panel">
+    <h2>3. Contact list: data (state) + one render function + event delegation</h2>
+
+    <div class="toolbar">
+      <label for="search">Search</label>
+      <input id="search" type="search" placeholder="Name or city" autocomplete="off">
+      <label class="check"><input id="fav-only" type="checkbox"> Favourites only</label>
+      <button type="button" id="btn-add-sample">Add a sample contact</button>
+      <button type="button" id="btn-reset">Reset data</button>
+    </div>
+
+    <p id="count" class="count">0 contacts</p>
+    <ul id="contact-list" class="contact-list"></ul>
+    <p id="empty" class="empty" hidden>No contacts match.</p>
+
+    <h3>What the click listener saw</h3>
+    <pre id="event-log" class="log">Click a Favourite or Delete button (try clicking right on the star).</pre>
+
+    <h3>The state right now (the array)</h3>
+    <pre id="state-view" class="log"></pre>
+
+    <template id="contact-template">
+      <li class="contact">
+        <img class="avatar" alt="" width="48" height="48">
+        <div class="info">
+          <h4 class="name"></h4>
+          <a class="email"></a>
+          <p class="city"></p>
+        </div>
+        <div class="actions">
+          <button type="button" class="fav" data-action="favourite"><span class="icon">☆</span> <span class="label">Favourite</span></button>
+          <button type="button" class="delete" data-action="delete">Delete</button>
+        </div>
+      </li>
+    </template>
+  </section>
+
+  <!-- ===================== Panel 4: sneak peek ===================== -->
+  <section id="panel-preview" class="panel">
+    <h2>4. Sneak peek: slots, shadow DOM, custom elements (later in the course)</h2>
+    <p>These are real custom elements. Each one copies <code>#badge-template</code> into its own private shadow DOM. The text you write between the tags goes into the <code>&lt;slot&gt;</code>.</p>
+    <p class="badges">
+      <contact-badge>Front-end</contact-badge>
+      <contact-badge>Templates</contact-badge>
+      <contact-badge></contact-badge>
+    </p>
+
+    <template id="badge-template">
+      <style>
+        .badge { display: inline-block; padding: .2rem .7rem; border-radius: 999px; background: #1e3a8a; color: #fff; font: 600 .9rem system-ui, sans-serif; }
+      </style>
+      <span class="badge"><slot>Guest</slot></span>
+    </template>
+  </section>
+</body>
+</html>

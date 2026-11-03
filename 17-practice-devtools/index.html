@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Café: DevTools practice</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- The café's own code (Q10, Q13, Q14, Q16, Q24) -->
+  <script type="module" src="site.js"></script>
+
+  <!-- One small buggy file per "fix it" question. Each is a module, so an error in one
+       file does not stop the others. Fix the bug inside the file the question names. -->
+  <script type="module" src="bugs/q04.js"></script>
+  <script type="module" src="bugs/q08.js"></script>
+  <script type="module" src="bugs/q09.js"></script>
+  <script type="module" src="bugs/q11.js"></script>
+  <script type="module" src="bugs/q12.js"></script>
+  <script type="module" src="bugs/q15.js"></script>
+  <script type="module" src="bugs/q17.js"></script>
+  <script type="module" src="bugs/q18.js"></script>
+  <script type="module" src="bugs/q20.js"></script>
+  <script type="module" src="bugs/q21.js"></script>
+  <script type="module" src="bugs/q22.js"></script>
+  <script type="module" src="bugs/q23.js"></script>
+  <script type="module" src="bugs/q25.js"></script>
+
+  <!-- Your own experiments -->
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1 id="cafe-name">Campus Café</h1>
+    <p class="tagline">Good coffee, fewer bugs.</p>
+    <p id="visit-count" class="visits">Visit #?</p>
+    <p class="staff-only">Staff counter: <span class="count">0</span></p>
+  </header>
+
+  <main>
+    <!-- ===== The café page (Q1-Q3, Q5-Q7, Q10, Q13, Q14, Q16, Q19, Q24) ===== -->
+    <section id="menu-section" class="card">
+      <h2>Menu</h2>
+      <ul id="menu">
+        <li class="menu-item" data-name="Coffee" data-price="2.25">
+          <span class="item-name">Coffee</span> <span class="price">$2.25</span>
+        </li>
+        <li class="menu-item" data-name="Tea" data-price="1.95">
+          <span class="item-name">Tea</span> <span class="price">$1.95</span>
+        </li>
+        <li class="menu-item" data-name="Muffin" data-price="3.25">
+          <span class="item-name">Muffin</span> <span class="price">$3.25</span>
+          <span class="badge badge--sale">On sale</span>
+        </li>
+        <li class="menu-item" data-name="Bagel" data-price="2.75">
+          <span class="item-name">Bagel</span> <span class="price">$2.75</span>
+        </li>
+        <li class="menu-item" data-name="Smoothie" data-price="5.50">
+          <span class="item-name">Smoothie</span> <span class="price">$5.50</span>
+          <span class="badge">New</span>
+        </li>
+        <li class="menu-item" data-name="Cookie" data-price="1.50">
+          <span class="item-name">Cookie</span> <span class="price">$1.50</span>
+        </li>
+      </ul>
+      <p id="promo" class="promo">Students get 10% off before 9 a.m.!</p>
+    </section>
+
+    <section class="card">
+      <h2 id="special-heading">Today's specials</h2>
+      <ul id="specials-list"><li>Loading specials...</li></ul>
+      <p>Hours: <span id="hours">Loading...</span></p>
+      <button type="button" id="surprise-btn">Surprise me</button>
+      <p id="surprise-output" class="output"></p>
+    </section>
+
+    <!-- ===== Fix-it questions: each box starts broken ===== -->
+    <section id="q4" class="question">
+      <h2>Q4</h2>
+      <p id="q4-output" class="output">Q4 is broken.</p>
+    </section>
+
+    <section id="q8" class="question">
+      <h2>Q8: click counter</h2>
+      <button type="button" id="q8-button">Click me</button>
+      <p id="q8-output" class="output">Clicked 0 times</p>
+    </section>
+
+    <section id="q9" class="question">
+      <h2>Q9: place an order</h2>
+      <button type="button" id="order-button">Place order</button>
+      <p id="q9-output" class="output">No order yet.</p>
+    </section>
+
+    <section id="q11" class="question">
+      <h2>Q11: list the menu</h2>
+      <p id="q11-output" class="output">Q11 is broken.</p>
+    </section>
+
+    <section id="q12" class="question">
+      <h2>Q12: price of the whole menu</h2>
+      <p id="q12-output" class="output">Q12 has not run.</p>
+    </section>
+
+    <section id="q15" class="question">
+      <h2>Q15: greeting</h2>
+      <p id="q15-output" class="output">Q15 is broken.</p>
+    </section>
+
+    <section id="q17" class="question">
+      <h2>Q17: 200 orders</h2>
+      <p id="q17-output" class="output">Q17 has not run.</p>
+    </section>
+
+    <section id="q18" class="question">
+      <h2>Q18: checkout ($20.00, 15% off, then 5% tax)</h2>
+      <button type="button" id="q18-button">Check out</button>
+      <p id="q18-output" class="output">Final price: ?</p>
+    </section>
+
+    <section id="q20" class="question">
+      <h2>Q20: quick add</h2>
+      <div id="q20-buttons">
+        <button type="button" class="add-btn" data-item="Coffee"><span class="icon">+</span> Coffee</button>
+        <button type="button" class="add-btn" data-item="Muffin"><span class="icon">+</span> Muffin</button>
+        <button type="button" class="add-btn" data-item="Cookie"><span class="icon">+</span> Cookie</button>
+      </div>
+      <ul id="q20-cart"></ul>
+    </section>
+
+    <section id="q21" class="question">
+      <h2>Q21: leave a tip</h2>
+      <button type="button" id="q21-button">Leave a tip</button>
+      <p id="q21-output" class="output">No tip yet.</p>
+    </section>
+
+    <section id="q22" class="question">
+      <h2>Q22: how many coffees?</h2>
+      <button type="button" id="q22-plus">+1 coffee</button>
+      <p>Coffees: <span class="count">0</span></p>
+    </section>
+
+    <section id="q23" class="question">
+      <h2>Q23: saved cart</h2>
+      <button type="button" id="q23-add">Add a coffee to the cart</button>
+      <button type="button" id="q23-clear">Empty the cart</button>
+      <p id="q23-output" class="output">Cart: (empty)</p>
+    </section>
+
+    <section id="q25" class="question">
+      <h2>Q25: tip calculator</h2>
+      <label for="q25-bill">Bill ($)</label>
+      <input id="q25-bill" type="number" min="0" step="0.01" value="40">
+      <label for="q25-tip">Tip</label>
+      <select id="q25-tip">
+        <option value="10">10%</option>
+        <option value="15" selected>15%</option>
+        <option value="20">20%</option>
+      </select>
+      <button type="button" id="q25-button">Calculate</button>
+      <p id="q25-output" class="output">Tip: ? · Total: ?</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Campus Café practice page · SDEV1150</p>
+  </footer>
+</body>
+</html>

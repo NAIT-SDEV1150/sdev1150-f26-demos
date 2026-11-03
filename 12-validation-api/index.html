@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo 12: the Constraint Validation API</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <main class="layout">
+    <section class="card">
+      <h1>Create an account</h1>
+      <p class="hint">Every rule lives in the HTML. JavaScript only decides <em>when</em> and <em>how</em> to show it.</p>
+
+      <!-- novalidate: keep the rules, hide the browser's pop-up bubbles -->
+      <form id="signup" novalidate>
+
+        <div class="field">
+          <label for="full-name">Full name</label>
+          <input id="full-name" name="fullName" type="text" autocomplete="name"
+                 required minlength="2" maxlength="40"
+                 data-label="full name" aria-describedby="full-name-error">
+          <div id="full-name-error" class="error-message"></div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email"
+                 required
+                 data-label="email" aria-describedby="email-error">
+          <div id="email-error" class="error-message"></div>
+        </div>
+
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" autocomplete="username"
+                 required pattern="[a-z][a-z0-9_]{2,14}"
+                 data-label="username"
+                 data-pattern-message="Use 3 to 15 lowercase letters, numbers or _, starting with a letter."
+                 aria-describedby="username-hint username-error">
+          <small id="username-hint" class="field-hint">3 to 15 characters: a-z, 0-9 and _</small>
+          <div id="username-error" class="error-message"></div>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password"
+                 required minlength="8" pattern=".*[0-9].*"
+                 data-label="password"
+                 data-pattern-message="Include at least one number."
+                 aria-describedby="password-error">
+          <div id="password-error" class="error-message"></div>
+        </div>
+
+        <div class="field">
+          <label for="confirm">Confirm password</label>
+          <input id="confirm" name="confirm" type="password" autocomplete="new-password"
+                 required
+                 data-label="password again" aria-describedby="confirm-error">
+          <div id="confirm-error" class="error-message"></div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" inputmode="numeric"
+                   required min="13" max="120" step="1"
+                   data-label="age" aria-describedby="age-error">
+            <div id="age-error" class="error-message"></div>
+          </div>
+
+          <div class="field">
+            <label for="start">Start date</label>
+            <input id="start" name="start" type="date"
+                   required min="2026-11-01" max="2027-06-30"
+                   data-label="start date" aria-describedby="start-error">
+            <div id="start-error" class="error-message"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="website">Website <span class="optional">(optional)</span></label>
+          <input id="website" name="website" type="url" placeholder="https://example.com"
+                 data-label="website" aria-describedby="website-error">
+          <div id="website-error" class="error-message"></div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone <span class="optional">(optional)</span></label>
+          <input id="phone" name="phone" type="tel" placeholder="403-555-0199"
+                 pattern="\d{3}-\d{3}-\d{4}"
+                 data-label="phone number"
+                 data-pattern-message="Use the format 403-555-0199."
+                 aria-describedby="phone-error">
+          <div id="phone-error" class="error-message"></div>
+        </div>
+
+        <div class="field check">
+          <input id="terms" name="terms" type="checkbox" value="yes"
+                 required
+                 data-label="terms" aria-describedby="terms-error">
+          <label for="terms">I agree to the class code of conduct</label>
+          <div id="terms-error" class="error-message"></div>
+        </div>
+
+        <div class="buttons">
+          <button type="submit">Create account</button>
+          <button type="reset" class="secondary">Clear</button>
+        </div>
+
+        <p id="form-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="api-buttons">
+        <button id="btn-check" type="button" class="secondary">form.checkValidity()</button>
+        <button id="btn-report" type="button" class="secondary">form.reportValidity()</button>
+      </div>
+
+      <h2>What FormData read</h2>
+      <pre id="result">(nothing submitted yet)</pre>
+    </section>
+
+    <aside class="card inspector">
+      <h2>ValidityState inspector</h2>
+      <p>Field: <code id="inspect-name">(click into a field)</code></p>
+      <p>Value: <code id="inspect-value"></code></p>
+      <table>
+        <thead><tr><th>input.validity.</th><th>value</th></tr></thead>
+        <tbody id="inspect-rows"></tbody>
+      </table>
+      <p>validationMessage: <code id="inspect-message"></code></p>
+      <p class="hint">Highlighted rows are <code>true</code>. Try: spaces only in Full name, <code>sam@</code> in Email, <code>12</code> in Age, letters in Phone.</p>
+    </aside>
+  </main>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 19 – templates and reusable UI practice</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Templates practice</h1>
+    <p class="subtitle">25 questions, one page. Every <code>&lt;template&gt;</code> you need is already here (look for them in the Elements panel).</p>
+    <p class="hacked-banner">Something ran code that it shouldn't have (see Q21).</p>
+  </header>
+
+  <!-- ======================= Tier 1: Simple (Q1-Q5) ======================= -->
+  <section id="tier-simple">
+    <h2>Simple</h2>
+
+    <h3>Q1</h3>
+    <p id="q1-out" class="output">?</p>
+    <template id="q1-template">
+      <h4>A heading</h4>
+      <p>First paragraph</p>
+      <p>Second paragraph</p>
+    </template>
+
+    <h3>Q2</h3>
+    <div id="q2-box" class="output"></div>
+    <template id="q2-template">
+      <p class="tip">Templates are copied, not shown.</p>
+    </template>
+
+    <h3>Q3</h3>
+    <div id="q3-box" class="output"></div>
+    <template id="q3-template">
+      <span class="tag"></span>
+    </template>
+
+    <h3>Q4</h3>
+    <div id="q4-product" class="mini-card" data-sku="MPL-250" data-in-stock="yes">Maple syrup, 250 ml</div>
+    <p id="q4-out" class="output">?</p>
+
+    <h3>Q5</h3>
+    <ul id="q5-list">
+      <li>Old item one</li>
+      <li>Old item two</li>
+      <li>Old item three</li>
+    </ul>
+  </section>
+
+  <!-- ======================= Tier 2: Easy (Q6-Q10) ======================= -->
+  <section id="tier-easy">
+    <h2>Easy</h2>
+
+    <h3>Q6</h3>
+    <div id="q6-shelf" class="shelf"></div>
+    <!-- also used in Q17 -->
+    <template id="product-template">
+      <article class="product">
+        <h4 class="product-name"></h4>
+        <p class="product-price"></p>
+      </article>
+    </template>
+
+    <h3>Q7</h3>
+    <div id="q7-gallery" class="gallery"></div>
+    <template id="photo-template">
+      <figure class="photo">
+        <a class="photo-link"><img class="photo-img" width="240" height="140"></a>
+        <figcaption class="photo-caption"></figcaption>
+      </figure>
+    </template>
+
+    <h3>Q8</h3>
+    <div id="q8-box" class="output"></div>
+
+    <h3>Q9</h3>
+    <ul id="q9-list"></ul>
+    <template id="genre-template">
+      <li class="genre"></li>
+    </template>
+
+    <h3>Q10</h3>
+    <div id="q10-box" class="output"></div>
+    <p id="q10-out" class="output">?</p>
+    <template id="q10-template">
+      <p>Copied paragraph A</p>
+      <p>Copied paragraph B</p>
+    </template>
+  </section>
+
+  <!-- ======================= Tier 3: Competent (Q11-Q15) ======================= -->
+  <section id="tier-competent">
+    <h2>Competent: a playlist</h2>
+
+    <h3>Q11 preview</h3>
+    <ul id="q11-preview" class="songs"></ul>
+
+    <h3>Q12-Q15 playlist</h3>
+    <p id="playlist-count" class="count">? songs</p>
+    <ul id="playlist" class="songs"></ul>
+    <p id="playlist-empty" class="empty" hidden>Your playlist is empty. Add a song!</p>
+    <button type="button" id="q15-add">Add a song</button>
+
+    <template id="song-template">
+      <li class="song">
+        <span class="song-title"></span>
+        <span class="song-artist"></span>
+        <span class="song-length"></span>
+        <button type="button" class="like" data-action="like">♡ Like</button>
+        <button type="button" class="delete" data-action="delete">Delete</button>
+      </li>
+    </template>
+  </section>
+
+  <!-- ======================= Tier 4: Advanced (Q16-Q20) ======================= -->
+  <section id="tier-advanced">
+    <h2>Advanced</h2>
+
+    <h3>Q16 comment thread</h3>
+    <ul id="q16-thread" class="thread"></ul>
+    <template id="comment-template">
+      <li class="comment">
+        <p class="comment-meta"><strong class="comment-author"></strong> · <span class="comment-time"></span></p>
+        <p class="comment-body"></p>
+        <ul class="replies"></ul>
+      </li>
+    </template>
+
+    <h3>Q17 sort and filter</h3>
+    <p class="controls">
+      <label for="q17-sort">Sort by</label>
+      <select id="q17-sort">
+        <option value="name">Name (A to Z)</option>
+        <option value="price-low">Price (low to high)</option>
+        <option value="price-high">Price (high to low)</option>
+      </select>
+      <label for="q17-max">Max price $</label>
+      <input id="q17-max" type="number" min="0" step="1" placeholder="any">
+    </p>
+    <div id="q17-list" class="shelf"></div>
+
+    <h3>Q18 cart</h3>
+    <ul id="cart" class="cart"></ul>
+    <p id="cart-total" class="count">Total: $0.00</p>
+    <template id="cart-template">
+      <li class="cart-row">
+        <span class="cart-name"></span>
+        <button type="button" data-action="dec" aria-label="One less">−</button>
+        <span class="cart-qty"></span>
+        <button type="button" data-action="inc" aria-label="One more">+</button>
+        <span class="cart-line"></span>
+      </li>
+    </template>
+
+    <h3>Q19 pick one</h3>
+    <div id="q19-grid" class="pick-grid">
+      <article class="product" data-name="Toque">
+        <img src="images/toque.svg" alt="A red toque" width="120" height="90">
+        <h4><span class="emoji">🧶</span> Toque</h4>
+        <p>$24.50</p>
+      </article>
+      <article class="product" data-name="Mitts">
+        <img src="images/mitts.svg" alt="Blue mitts" width="120" height="90">
+        <h4><span class="emoji">🧤</span> Mitts</h4>
+        <p>$18.00</p>
+      </article>
+      <article class="product" data-name="Mug">
+        <img src="images/mug.svg" alt="A green mug" width="120" height="90">
+        <h4><span class="emoji">☕</span> Mug</h4>
+        <p>$15.00</p>
+      </article>
+    </div>
+    <p id="q19-out" class="output">Selected: nothing yet</p>
+
+    <h3>Q20 undo</h3>
+    <ul id="q20-list" class="notes"></ul>
+    <button type="button" id="q20-undo" disabled>Undo delete</button>
+    <template id="note-template">
+      <li class="note">
+        <span class="note-text"></span>
+        <button type="button" class="delete" data-action="delete">Delete</button>
+      </li>
+    </template>
+  </section>
+
+  <!-- ======================= Tier 5: Applied (Q21-Q25) ======================= -->
+  <section id="tier-applied">
+    <h2>Applied</h2>
+
+    <h3>Q21 reviews</h3>
+    <ul id="q21-reviews" class="reviews"></ul>
+    <template id="review-template">
+      <li class="review">
+        <p><b class="review-author"></b> <span class="review-stars"></span></p>
+        <p class="review-text"></p>
+      </li>
+    </template>
+
+    <h3>Q22 upcoming events</h3>
+    <ul id="q22-list" class="events"></ul>
+    <p id="q22-status" class="count">Showing 0 of 0</p>
+    <button type="button" id="q22-more">Load more</button>
+    <template id="event-template">
+      <li class="event"><time class="event-date"></time> <span class="event-name"></span></li>
+    </template>
+
+    <h3>Q23 weather table</h3>
+    <table id="q23-table">
+      <thead>
+        <tr><th>City</th><th>Temperature</th><th>Feels</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <template id="row-template">
+      <tr>
+        <td class="city"></td>
+        <td class="temp"></td>
+        <td class="feel"></td>
+      </tr>
+    </template>
+
+    <h3>Q24 task board</h3>
+    <div id="q24-board" class="board">
+      <div class="column">
+        <h4>To do (<span id="q24-todo-count">0</span>)</h4>
+        <ul id="q24-todo"></ul>
+      </div>
+      <div class="column">
+        <h4>Done (<span id="q24-done-count">0</span>)</h4>
+        <ul id="q24-done"></ul>
+      </div>
+    </div>
+    <template id="task-template">
+      <li class="task">
+        <span class="task-text"></span>
+        <button type="button" data-action="move"></button>
+      </li>
+    </template>
+
+    <h3>Q25 team directory</h3>
+    <p>
+      <label for="q25-search">Search by name or role</label>
+      <input id="q25-search" type="search" autocomplete="off">
+    </p>
+    <p id="q25-status" class="count">Showing 0 of 0</p>
+    <ul id="q25-list" class="directory"></ul>
+    <p id="q25-empty" class="empty" hidden></p>
+    <template id="person-template">
+      <li class="person">
+        <strong class="person-name"></strong>
+        <span class="person-role"></span>
+        <a class="person-email"></a>
+      </li>
+    </template>
+  </section>
+
+  <footer>Practice set 15 · SDEV1150</footer>
+</body>
+</html>

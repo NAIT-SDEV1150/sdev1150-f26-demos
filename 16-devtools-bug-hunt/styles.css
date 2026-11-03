@@ -1,0 +1,62 @@
+/* Bug Hunt: Reading List. The CSS itself is fine; read it when a class "does nothing". */
+
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 760px;
+  margin: 0 auto 3rem;
+  padding: 0 1rem;
+  line-height: 1.45;
+  color: #1e293b;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem 0;
+  border-bottom: 3px solid #0f766e;
+}
+.site-header h1 { margin: 0; color: #0f766e; }
+
+section {
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+h2 { margin-top: 0; }
+
+.hunt-card { background: #f0fdfa; border-color: #99f6e4; }
+.hint { font-size: .9rem; color: #475569; }
+
+form { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+input, button { font: inherit; }
+input { padding: .3rem .5rem; }
+button { cursor: pointer; padding: .3rem .8rem; border-radius: 6px; border: 1px solid #94a3b8; background: #fff; }
+button[type="submit"] { background: #0f766e; color: #fff; border-color: #0f766e; }
+
+.message { min-height: 1.5rem; color: #0f766e; }
+.toolbar { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-bottom: .75rem; }
+
+#book-list { list-style: none; padding: 0; margin: 0; }
+
+.book {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem .75rem;
+  margin-bottom: .4rem;
+  border-left: 5px solid #f59e0b;
+  background: #fffbeb;
+  border-radius: 4px;
+}
+
+/* A book that has been read: green bar, grey text, crossed out */
+.book.read {
+  border-left-color: #16a34a;
+  background: #f0fdf4;
+  color: #64748b;
+  text-decoration: line-through;
+}
+
+#summary { font-weight: 600; }

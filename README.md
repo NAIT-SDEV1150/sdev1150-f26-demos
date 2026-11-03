@@ -20,6 +20,13 @@ Every demo from class, one folder each. New demos are added after each class.
 | `09-template-cards` | `<template>` and `cloneNode` |
 | `10-practice-dom-events` | 25-question practice set (`QUESTIONS.md`, `WALKTHROUGH.md`) |
 | `11-selector-quest` | Selector Quest game (also on [KaktusLive Games](https://kaktuslive.dev/games)) |
+| `12-validation-api` | Built-in validation: constraint attributes, `validity`, one reusable `validate()`, `FormData`, accessible errors |
+| `13-practice-validation` | 25-question practice set on validation (`QUESTIONS.md`, `WALKTHROUGH.md`) |
+| `14-templates-deep-dive` | `<template>`, factory functions, rendering lists from arrays, event delegation |
+| `15-practice-templates` | 25-question practice set on templates |
+| `16-devtools-bug-hunt` | Find and fix 8 planted bugs with DevTools |
+| `17-practice-devtools` | 25-question practice set on DevTools and debugging |
+| `34-validation-live-build` | Validation built live: starter with each step commented out (HTML only, `validity`, CSS, `setCustomValidity`, `novalidate`, submit, reset) |
 
 ## Get the demos
 

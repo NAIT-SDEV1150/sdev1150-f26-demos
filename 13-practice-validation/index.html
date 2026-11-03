@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 19 – Form validation practice</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Form Validation Practice</h1>
+    <p class="subtitle">25 questions, one page. Write every answer in <code>main.js</code>.</p>
+  </header>
+
+  <!-- ===== Q1–5: Simple ===== -->
+  <section id="simple">
+    <h2>Simple (Q1–Q5)</h2>
+    <!-- No novalidate here on purpose (see Q3) -->
+    <form id="a-form">
+      <p>
+        <label for="a-name">Name</label>
+        <input id="a-name" name="name" type="text" required>
+      </p>
+      <p>
+        <label for="a-age">Age</label>
+        <input id="a-age" name="age" type="number" min="13" value="5">
+      </p>
+      <p>
+        <label for="a-code">Access code</label>
+        <input id="a-code" name="code" type="text" value="WELCOME">
+        <span id="a-code-error" class="error-message"></span>
+      </p>
+    </form>
+    <p>Q1: <output id="out-1">?</output></p>
+    <p>Q2: <output id="out-2">?</output></p>
+    <p>Q3: <output id="out-3">?</output></p>
+    <p>Q5: <output id="out-5">?</output></p>
+  </section>
+
+  <!-- ===== Q6–10: Easy ===== -->
+  <section id="easy">
+    <h2>Easy (Q6–Q10): newsletter</h2>
+    <form id="b-form" novalidate>
+      <p>
+        <label for="b-email">Email</label>
+        <input id="b-email" name="email" type="email" required>
+        <span id="b-email-error" class="error-message"></span>
+      </p>
+      <p>
+        <label for="b-postal">Postal code</label>
+        <input id="b-postal" name="postal" type="text" pattern="[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d">
+        <span id="b-postal-error" class="error-message"></span>
+      </p>
+      <p>
+        <label for="b-phone">Phone</label>
+        <input id="b-phone" name="phone" type="tel" pattern="\d{3}-\d{3}-\d{4}" aria-describedby="b-phone-error">
+        <span id="b-phone-error" class="error-message"></span>
+      </p>
+      <p>
+        <label for="b-nick">Nickname</label>
+        <input id="b-nick" name="nick" type="text" required value="   ">
+        <span id="b-nick-error" class="error-message"></span>
+      </p>
+      <button type="submit">Subscribe</button>
+    </form>
+    <pre id="b-out" class="output"></pre>
+  </section>
+
+  <!-- ===== Q11–15: Competent ===== -->
+  <section id="competent">
+    <h2>Competent (Q11–Q15): workshop booking</h2>
+    <form id="c-form" novalidate>
+      <div class="field">
+        <label for="c-name">Name</label>
+        <input id="c-name" name="name" type="text" required minlength="2"
+               data-label="name" aria-describedby="c-name-error">
+        <div id="c-name-error" class="error-message"></div>
+      </div>
+      <div class="field">
+        <label for="c-email">Email</label>
+        <input id="c-email" name="email" type="email" required
+               data-label="email" aria-describedby="c-email-error">
+        <div id="c-email-error" class="error-message"></div>
+      </div>
+      <div class="field">
+        <label for="c-seats">Seats (1 to 4)</label>
+        <input id="c-seats" name="seats" type="number" required min="1" max="4" step="1"
+               data-label="number of seats" aria-describedby="c-seats-error">
+        <div id="c-seats-error" class="error-message"></div>
+      </div>
+      <div class="field">
+        <label for="c-site">Website (optional)</label>
+        <input id="c-site" name="site" type="url" placeholder="https://"
+               data-label="website" aria-describedby="c-site-error">
+        <div id="c-site-error" class="error-message"></div>
+      </div>
+      <button type="submit">Book</button>
+      <button type="reset">Clear</button>
+      <p id="c-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- ===== Q16–20: Advanced ===== -->
+  <section id="advanced">
+    <h2>Advanced (Q16–Q20)</h2>
+
+    <h3>Trip account (Q16–Q18)</h3>
+    <form id="d-form" novalidate>
+      <div class="field">
+        <label for="d-pass">Password</label>
+        <input id="d-pass" name="password" type="password" required minlength="8">
+        <div id="d-pass-error" class="error-message"></div>
+      </div>
+      <div class="field">
+        <label for="d-confirm">Confirm password</label>
+        <input id="d-confirm" name="confirm" type="password" required>
+        <div id="d-confirm-error" class="error-message"></div>
+      </div>
+      <div class="field">
+        <label for="d-from">Departure date</label>
+        <input id="d-from" name="from" type="date" required>
+      </div>
+      <div class="field">
+        <label for="d-to">Return date</label>
+        <input id="d-to" name="to" type="date" required>
+        <div id="d-to-error" class="error-message"></div>
+      </div>
+      <button type="submit">Save trip</button>
+    </form>
+    <div id="d-summary" class="summary" role="alert">
+      <ul id="d-summary-list"></ul>
+    </div>
+    <p id="d-done"></p>
+
+    <h3>Validity inspector (Q19)</h3>
+    <p>
+      <label for="d-probe">Product code (3 capitals, a dash, 4 digits)</label>
+      <input id="d-probe" type="text" required pattern="[A-Z]{3}-\d{4}" maxlength="8">
+    </p>
+    <ul id="d-flags"></ul>
+
+    <h3>Newsletter (Q20)</h3>
+    <form id="d2-form" novalidate>
+      <p>
+        <label for="d2-email">Email</label>
+        <input id="d2-email" name="email" type="email" required>
+      </p>
+      <p>
+        <input id="d2-consent" name="consent" type="checkbox" required>
+        <label for="d2-consent">Yes, send me the newsletter</label>
+      </p>
+      <button id="d2-submit" type="submit">Subscribe</button>
+    </form>
+    <p id="d2-out"></p>
+  </section>
+
+  <!-- ===== Q21–25: Applied ===== -->
+  <section id="applied">
+    <h2>Applied (Q21–Q25)</h2>
+
+    <h3>Pizza order (Q21)</h3>
+    <form id="e-pizza-form" novalidate>
+      <fieldset id="e-toppings">
+        <legend>Toppings (choose 1 to 3)</legend>
+        <label><input type="checkbox" name="topping" value="Mushroom"> Mushroom</label>
+        <label><input type="checkbox" name="topping" value="Pepper"> Pepper</label>
+        <label><input type="checkbox" name="topping" value="Olive"> Olive</label>
+        <label><input type="checkbox" name="topping" value="Onion"> Onion</label>
+        <label><input type="checkbox" name="topping" value="Pineapple"> Pineapple</label>
+      </fieldset>
+      <div id="e-toppings-error" class="error-message"></div>
+      <button type="submit">Order</button>
+    </form>
+    <p id="e-pizza-out"></p>
+
+    <h3>Promo code (Q22)</h3>
+    <p>
+      <label for="e-promo">Promo code (optional)</label>
+      <input id="e-promo" type="text">
+      <span id="e-promo-msg" class="error-message"></span>
+    </p>
+
+    <h3>RSVP (Q23: fix the bugs)</h3>
+    <form id="e-rsvp-form" novalidate>
+      <p>
+        <label for="e-guest">Your name</label>
+        <input id="e-guest" name="guest" type="text" required>
+        <span class="error-message"></span>
+      </p>
+      <p>
+        <label for="e-count">People (1 to 6)</label>
+        <input id="e-count" name="count" type="number" required min="1" max="6">
+        <span class="error-message"></span>
+      </p>
+      <button type="submit">RSVP</button>
+    </form>
+    <p id="e-rsvp-out"></p>
+
+    <h3>Phone number (Q24)</h3>
+    <p>
+      <label for="e-phone">Phone (optional)</label>
+      <input id="e-phone" type="tel" placeholder="403-555-0199">
+      <span id="e-phone-error" class="error-message"></span>
+    </p>
+
+    <h3>Edit profile (Q25)</h3>
+    <form id="e-profile-form" novalidate>
+      <p>
+        <label for="e-display">Display name</label>
+        <input id="e-display" name="display" type="text" required minlength="2" value="Sam Lee">
+      </p>
+      <p>
+        <label for="e-city">City</label>
+        <input id="e-city" name="city" type="text" value="Calgary">
+      </p>
+      <p>
+        <input id="e-news" name="news" type="checkbox" checked>
+        <label for="e-news">Email me class news</label>
+      </p>
+      <button id="e-save" type="submit">Save changes</button>
+    </form>
+    <p id="e-profile-out"></p>
+  </section>
+</body>
+</html>

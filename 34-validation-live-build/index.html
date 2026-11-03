@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Validation: live build</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <h1>Join the club</h1>
+
+  <!-- Step 1: try it first with NO novalidate and NO JavaScript.
+       Step 5: add novalidate to the form tag. -->
+  <form id="join">
+    <div class="field">
+      <label for="name">Name</label>
+      <input id="name" name="name" required minlength="2" aria-describedby="name-error">
+      <div class="error-message" id="name-error" aria-live="polite"></div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required aria-describedby="email-error">
+      <div class="error-message" id="email-error" aria-live="polite"></div>
+    </div>
+
+    <div class="field">
+      <label for="age">Age (13 to 120)</label>
+      <input id="age" name="age" type="number" min="13" max="120" required aria-describedby="age-error">
+      <div class="error-message" id="age-error" aria-live="polite"></div>
+    </div>
+
+    <div class="field">
+      <label for="password">Password (8+ characters, include a number)</label>
+      <input id="password" name="password" type="password" required minlength="8" aria-describedby="password-error">
+      <div class="error-message" id="password-error" aria-live="polite"></div>
+    </div>
+
+    <div class="field">
+      <label for="confirm">Confirm password</label>
+      <input id="confirm" name="confirm" type="password" required aria-describedby="confirm-error">
+      <div class="error-message" id="confirm-error" aria-live="polite"></div>
+    </div>
+
+    <button type="submit">Join</button>
+    <button type="button" id="reset">Reset</button>
+  </form>
+
+  <pre id="output"></pre>
+</body>
+</html>

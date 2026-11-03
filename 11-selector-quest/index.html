@@ -632,7 +632,38 @@ codeValQ('What ends up in tens?', 'const tens = [1, 2, 3].map(n => n * 10);\ncon
 /* ---------- Storage ---------- */
 var KEY = 'selectorQuest.v1';
 function load() { try { var d = JSON.parse(localStorage.getItem(KEY)); return (d && typeof d === 'object') ? d : {}; } catch (e) { return {}; } }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(DATA)); } catch (e) { /* storage blocked: ignore */ } }
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(DATA)); } catch (e) { /* storage blocked: ignore */ }
+  post({ type: 'game.state', game: GAME, version: VERSION, state: DATA });   // the KaktusLive page keeps it
+}
+
+/* ---------- KaktusLive games contract (KAKTUS_GAMES_SPEC_2026-10-23) ---------- */
+var GAME = 'selector-quest', VERSION = '1.2.0';
+function post(msg) { try { if (window.parent !== window) window.parent.postMessage(msg, '*'); } catch (e) { /* not framed */ } }
+// The page sends back what it saved (from the browser or the student's account): keep the better of each level.
+window.addEventListener('message', function (e) {
+  var m = e.data;
+  if (e.source !== window.parent || !m || m.type !== 'game.restore' || m.game !== GAME) return;
+  // Levels the account recorded (every game gets these), then this game's own save data if any.
+  (Array.isArray(m.levels) ? m.levels : []).forEach(function (l) {
+    var i = Number(l.level) - 1;
+    if (!(i >= 0 && i < LEVELS.length)) return;
+    var p = DATA.levels[i] || { stars: 0, best: 0 };
+    p.stars = Math.max(p.stars || 0, Number(l.stars) || 0);
+    p.best = Math.max(p.best || 0, Number(l.best) || 0);
+    DATA.levels[i] = p;
+  });
+  var st = (m.state && typeof m.state === 'object') ? m.state : {};
+  var levels = st.levels || {};
+  Object.keys(levels).forEach(function (k) {
+    var a = DATA.levels[k] || {}, b = levels[k] || {};
+    DATA.levels[k] = { stars: Math.max(a.stars || 0, b.stars || 0), best: Math.max(a.best || 0, b.best || 0),
+      attempts: Math.max(a.attempts || 0, b.attempts || 0) };
+  });
+  DATA.lightning = Math.max(DATA.lightning || 0, st.lightning || 0);
+  save();   // the page keeps the merged copy
+  if (S.screen === 'home') renderHome();
+});
 var DATA = load();
 DATA.levels = DATA.levels || {};
 DATA.lightning = DATA.lightning || 0;
@@ -754,6 +785,10 @@ function resetRun() { S.score = 0; S.streak = 0; S.mistakes = 0; S.correct = 0; 
 function startLevel(L) {
   stopTimers();
   S.mode = 'level'; S.level = L; resetRun();
+  S.startedAt = Date.now();
+  var p = DATA.levels[L] || { stars: 0, best: 0 };
+  p.attempts = (p.attempts || 0) + 1;
+  DATA.levels[L] = p; save();
   S.queue = Q.filter(function (q) { return q.level === L; });
   showScreen('play');
   renderQ();
@@ -990,6 +1025,7 @@ function finishLevel() {
   p.stars = Math.max(p.stars || 0, stars);
   p.best = Math.max(p.best || 0, S.score);
   DATA.levels[S.level] = p; save();
+  reportLevel(true, stars);
   E.dTitle.textContent = 'Level ' + (S.level + 1) + ' complete!';
   E.dStars.innerHTML = starsHTML(stars);
   E.dStars.setAttribute('aria-label', stars + ' of 3 stars');
@@ -1004,12 +1040,21 @@ function finishLevel() {
   confetti(stars === 3 ? 140 : 80);
   try { (E.dNext.hidden ? E.dReplay : E.dNext).focus({ preventScroll: true }); } catch (e) { /* ignore */ }
 }
+function reportLevel(completed, stars) {
+  if (S.mode !== 'level' || !S.startedAt) return;
+  var p = DATA.levels[S.level] || {};
+  post({ type: 'game.progress', game: GAME, version: VERSION, level: S.level + 1, completed: completed,
+    score: S.score, attempts: p.attempts || 1, time_ms: Math.min(Date.now() - S.startedAt, 6 * 3600 * 1000), stars: completed ? stars : 0 });
+  S.startedAt = 0;
+}
+function leaveLevel() { if (S.screen === 'play') reportLevel(false, 0); renderHome(); }
 function endLightning() {
   if (S.mode !== 'lightning') return;
   stopTimers();
   S.timeLeft = Math.max(0, S.timeLeft);
   var newBest = S.score > (DATA.lightning || 0);
   if (newBest) { DATA.lightning = S.score; save(); }
+  post({ type: 'game.event', game: GAME, name: 'lightning', data: { score: S.score, correct: S.correct, best: DATA.lightning } });
   S.lastStars = 0;
   E.dTitle.textContent = "Time's up!";
   E.dStars.innerHTML = '';
@@ -1025,8 +1070,9 @@ function endLightning() {
 E.dNext.addEventListener('click', function () { startLevel(Math.min(S.level + 1, LEVELS.length - 1)); });
 E.dReplay.addEventListener('click', function () { if (S.mode === 'lightning') startLightning(); else startLevel(S.level); });
 E.dHome.addEventListener('click', renderHome);
-$('sq-quit').addEventListener('click', renderHome);
-$('sq-logo').addEventListener('click', renderHome);
+$('sq-quit').addEventListener('click', leaveLevel);
+$('sq-logo').addEventListener('click', leaveLevel);
+window.addEventListener('pagehide', function () { if (S.screen === 'play') reportLevel(false, 0); });
 
 /* ---------- Keyboard ---------- */
 document.addEventListener('keydown', function (e) {
@@ -1055,6 +1101,8 @@ window.SQ = {
 };
 
 renderHome();
+post({ type: 'game.ready', game: GAME, version: VERSION, levels: LEVELS.length });
+// No game.state here: until the page restores, DATA is the sandbox's empty start.
 })();
 </script>
 </body>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bug Hunt: Reading List</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <img src="images/logo.svg" alt="Reading List logo" width="48" height="48">
+    <h1>Reading List</h1>
+  </header>
+
+  <main>
+    <section class="hunt-card">
+      <h2>How to hunt</h2>
+      <p>This page has <strong>8 bugs</strong> planted in it. Use DevTools (F12) to find each one. Fix one bug at a time, save, reload, and test again.</p>
+      <ol>
+        <li><strong>Reproduce</strong> it: what did you do, what did you expect, what happened?</li>
+        <li><strong>Read</strong> the message in the Console (red = error, yellow = warning).</li>
+        <li><strong>Locate</strong> the line: click the file name on the right of the message.</li>
+        <li><strong>Guess</strong> the cause, then <strong>test</strong> the guess (log, breakpoint, Elements).</li>
+        <li><strong>Fix</strong> one thing, then <strong>re-test</strong> from a fresh reload.</li>
+      </ol>
+      <p class="hint">Things to try: add two books, mark one as read, tick "Show unread only", click Save list, then reload. Check every panel: Console, Elements, Sources, Network, Application.</p>
+    </section>
+
+    <section>
+      <h2>Add a book</h2>
+      <form id="book-form">
+        <label for="title">Title</label>
+        <input id="title" name="title" required>
+        <label for="pages">Pages</label>
+        <input id="pages" name="pages" type="number" min="1" required>
+        <button type="submit">Add book</button>
+      </form>
+      <p id="form-message" class="message"></p>
+    </section>
+
+    <section>
+      <h2>My books</h2>
+      <div class="toolbar">
+        <label><input type="checkbox" id="unread-only"> Show unread only</label>
+        <button type="button" id="save-btn">Save list</button>
+        <button type="button" id="clear-btn">Clear list</button>
+      </div>
+      <ul id="book-list"></ul>
+      <p id="summary">0 books · 0 pages</p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,12 @@
+body { font-family: system-ui, sans-serif; max-width: 520px; margin: 32px auto; padding: 0 16px; }
+.field { margin-bottom: 14px; }
+label { display: block; margin-bottom: 4px; }
+input { font: inherit; width: 100%; padding: 6px 8px; border: 2px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+button { font: inherit; padding: 6px 14px; margin-right: 6px; }
+.error-message { color: #b91c1c; font-size: .9rem; min-height: 1.2em; margin-top: 4px; }
+pre { background: #0f172a; color: #e2e8f0; padding: 10px; border-radius: 8px; min-height: 1em; }
+
+/* Step 3: try each of these, one at a time */
+/* input:invalid { border-color: red; } */
+/* input.touched:invalid { border-color: red; } */
+/* input:user-invalid { border-color: red; } */

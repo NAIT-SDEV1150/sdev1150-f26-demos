@@ -12,7 +12,6 @@ Every demo from class, one folder each. New demos are added after each class.
 | `06-tic-tac-toe` | Events and game state |
 | `07-input-events` | `input`, `focus`/`blur`, `change`, `keydown` |
 | `08-login-form` | `submit`, `preventDefault`, validation messages |
-| `08-login-form/step1…step4` | The login form built up in four steps: capture, basic check, check functions, validator |
 | `08a-login-simple` | A minimal login form |
 | `08b-login-as-you-type` | Validating as you type |
 | `08c-login-password` | Password rules |
@@ -27,6 +26,7 @@ Every demo from class, one folder each. New demos are added after each class.
 | `16-devtools-bug-hunt` | Find and fix 8 planted bugs with DevTools |
 | `17-practice-devtools` | 25-question practice set on DevTools and debugging |
 | `34-validation-live-build` | Validation built live: starter with each step commented out (HTML only, `validity`, CSS, `setCustomValidity`, `novalidate`, submit, reset) |
+| `35-todo-crud` | A to-do list with full CRUD: an array of objects, a `<template>` component, `render()`, event delegation, edit in place |
 
 ## Get the demos
 

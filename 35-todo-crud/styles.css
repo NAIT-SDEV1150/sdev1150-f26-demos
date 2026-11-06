@@ -1,0 +1,13 @@
+body { font-family: system-ui, sans-serif; background: #f6f4ee; margin: 0; }
+.app { max-width: 520px; margin: 40px auto; background: #fff; padding: 20px 24px; border-radius: 12px; border: 1px solid #e5e7eb; }
+h1 { margin-top: 0; }
+#todo-form { display: flex; gap: 8px; margin-bottom: 16px; }
+#todo-text, .edit-field { flex: 1; font: inherit; padding: 6px 8px; border: 2px solid #cbd5e1; border-radius: 6px; }
+button { font: inherit; padding: 4px 10px; border-radius: 6px; border: 1px solid #94a3b8; background: #fff; cursor: pointer; }
+#todo-list { list-style: none; padding: 0; margin: 0; }
+.todo { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+.todo .text { flex: 1; }
+.todo.done .text { text-decoration: line-through; color: #94a3b8; }
+.todo.editing .text, .todo.editing .edit { display: none; }
+#todo-count { color: #6b7280; font-size: .9rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }

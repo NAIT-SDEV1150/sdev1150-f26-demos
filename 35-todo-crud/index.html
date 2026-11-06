@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>To-do list: CRUD with a template</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <h1>To-do list</h1>
+
+    <!-- C: Create -->
+    <form id="todo-form">
+      <label for="todo-text" class="visually-hidden">New to-do</label>
+      <input id="todo-text" placeholder="What needs doing?" required autocomplete="off">
+      <button type="submit">Add</button>
+    </form>
+
+    <!-- R: Read (rendered from the array) -->
+    <ul id="todo-list"></ul>
+    <p id="todo-count"></p>
+  </main>
+
+  <!-- The reusable piece: one to-do item -->
+  <template id="todo-template">
+    <li class="todo">
+      <input type="checkbox" class="toggle" aria-label="Done">
+      <span class="text"></span>
+      <input class="edit-field" hidden aria-label="Edit to-do">
+      <button type="button" class="edit">Edit</button>
+      <button type="button" class="delete">Delete</button>
+    </li>
+  </template>
+</body>
+</html>

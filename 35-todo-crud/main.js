@@ -50,7 +50,10 @@ function buildTodoItem(todo) {
 
 // ---------- R: draw the whole list from the array ----------
 function render() {
-  list.replaceChildren(...todos.map(buildTodoItem));
+  list.replaceChildren();                 // 1. empty the list
+  todos.forEach((todo) => {               // 2. for each object in the array...
+    list.append(buildTodoItem(todo));     //    ...build its <li> and add it
+  });
   const left = todos.filter((t) => !t.done).length;
   count.textContent = `${left} of ${todos.length} left to do`;
 }

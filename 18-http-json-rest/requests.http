@@ -1,0 +1,97 @@
+# Demo 18 requests: open this file in VS Code with the REST Client extension
+# (by Huachao Mao). A small "Send Request" link appears above each request.
+# Click it and the response opens on the right: status line, headers, body.
+#
+# Start the server first:  npm start
+# Requests are separated by lines that start with ###
+# A request is:  METHOD URL    then header lines    then ONE blank line    then the body
+#
+# Restart the server to put the data back the way it started.
+
+@host = http://localhost:3001
+
+### 1. Is the server up?
+GET {{host}}/api/health
+
+### 2. The whole collection: every book (200, a JSON array)
+GET {{host}}/api/books
+
+### 3. One item: the book with id 42 (200, one JSON object)
+GET {{host}}/api/books/42
+
+### 4. An item that does not exist (404 Not Found)
+GET {{host}}/api/books/999
+
+### 5. An id that is not a number (400 Bad Request)
+GET {{host}}/api/books/abc
+
+### 6. Query string: only available books
+GET {{host}}/api/books?available=true
+
+### 7. Query string with two parameters (search + filter)
+GET {{host}}/api/books?q=the&available=true
+
+### 8. Create a book (201 Created). Look for the Location header in the response.
+POST {{host}}/api/books
+Content-Type: application/json
+
+{
+  "title": "The Golden Compass",
+  "author": "Philip Pullman",
+  "year": 1995
+}
+
+### 9. Create, but forget the Content-Type header (415 Unsupported Media Type)
+POST {{host}}/api/books
+
+{ "title": "No header", "author": "Someone" }
+
+### 10. Create with broken JSON: single quotes (400, "Invalid JSON")
+POST {{host}}/api/books
+Content-Type: application/json
+
+{ 'title': 'Bad quotes', 'author': 'Someone' }
+
+### 11. Create with valid JSON but a missing field (400, "Validation failed")
+POST {{host}}/api/books
+Content-Type: application/json
+
+{ "title": "Who wrote me?" }
+
+### 12. PUT replaces the WHOLE book. (Book 43 is the one request 8 created.)
+PUT {{host}}/api/books/43
+Content-Type: application/json
+
+{
+  "title": "Northern Lights",
+  "author": "Philip Pullman",
+  "year": 1995,
+  "available": false
+}
+
+### 13. PUT with only one field: the server says title and author are required (400)
+PUT {{host}}/api/books/43
+Content-Type: application/json
+
+{ "available": true }
+
+### 14. PATCH changes only the fields you send (200)
+PATCH {{host}}/api/books/43
+Content-Type: application/json
+
+{ "available": true }
+
+### 15. Delete it (204 No Content: success, no body)
+DELETE {{host}}/api/books/43
+
+### 16. Delete it again (404: it is already gone; the server is in the same state)
+DELETE {{host}}/api/books/43
+
+### 17. A method this URL does not support (405 Method Not Allowed; see the Allow header)
+DELETE {{host}}/api/books
+
+### 18. A redirect (301). REST Client follows it, so you may see the book list.
+GET {{host}}/old-books
+
+### 19. A server error (500)
+GET {{host}}/api/broken

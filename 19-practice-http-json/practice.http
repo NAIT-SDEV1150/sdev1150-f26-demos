@@ -1,0 +1,32 @@
+# Day 20 practice: your HTTP requests go in this file.
+#
+# 1. Install the VS Code extension "REST Client" (by Huachao Mao).
+# 2. Start the demo 18 server: cd 18-http-json-rest, then npm start.
+# 3. Write each request below its question heading, then click "Send Request" above it.
+#
+# Reminders:
+#   - Separate requests with a line that starts with ###
+#   - A request is: METHOD URL, then headers (one per line), then ONE blank line, then the body
+#   - {{host}} is filled in from the variable below
+#   - Write what you got back (status code, ids) as a # comment under the request
+
+@host = http://localhost:3001
+
+### Q5: health check
+GET {{host}}/api/health
+
+### Q10: check your predictions (a to e)
+
+### Q14: three GET requests
+
+### Q15: create a book, then GET it
+
+### Q18: same request twice (PATCH, POST, DELETE)
+
+### Q19: PUT vs PATCH
+
+### Q21: the search URL
+
+### Q23: Campus Events requests (written, NOT sent: this API is made up)
+
+### Q25: the corrected requests

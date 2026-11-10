@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo 18: HTTP, JSON and REST</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Demo 18: HTTP, JSON and REST</h1>
+    <p>This page came from the server you started with <code>npm start</code>. Open DevTools (F12), go to the <strong>Network</strong> tab, then click the links below.</p>
+  </header>
+
+  <main>
+    <section id="try-get">
+      <h2>1. Try GET requests in the browser</h2>
+      <p>Typing a URL or clicking a link always sends a <strong>GET</strong> request. Each link opens the raw JSON the server sends back.</p>
+      <ul class="endpoints">
+        <li><a href="/api/books">GET /api/books</a> <span class="expect">200, a JSON array</span></li>
+        <li><a href="/api/books/42">GET /api/books/42</a> <span class="expect">200, one JSON object</span></li>
+        <li><a href="/api/books?available=true">GET /api/books?available=true</a> <span class="expect">200, query string filters the list</span></li>
+        <li><a href="/api/books?q=the">GET /api/books?q=the</a> <span class="expect">200, search title or author</span></li>
+        <li><a href="/api/books/999">GET /api/books/999</a> <span class="expect">404, no such book</span></li>
+        <li><a href="/api/books/abc">GET /api/books/abc</a> <span class="expect">400, bad id</span></li>
+        <li><a href="/old-books">GET /old-books</a> <span class="expect">301, then the browser follows it</span></li>
+        <li><a href="/api/broken">GET /api/broken</a> <span class="expect">500, the server failed</span></li>
+        <li><a href="/api/health">GET /api/health</a> <span class="expect">200, is the server up?</span></li>
+      </ul>
+      <p class="note">To send POST, PUT, PATCH or DELETE, use <code>requests.http</code> in VS Code (REST Client) or Thunder Client. A plain link can't.</p>
+    </section>
+
+    <section id="playground">
+      <h2>2. JSON playground</h2>
+      <p>Type JSON text, then press <strong>Parse</strong>. If the text breaks a JSON rule, you'll see the same error <code>JSON.parse</code> gives in your code.</p>
+      <label for="json-input">JSON text</label>
+      <textarea id="json-input" rows="9" spellcheck="false">{ "title": "Dune", "author": "Frank Herbert", "year": 1965, "available": true }</textarea>
+      <div class="buttons">
+        <button id="btn-parse" type="button">Parse</button>
+        <button id="btn-pretty" type="button">Pretty-print</button>
+        <button id="btn-broken" type="button">Load a broken example</button>
+      </div>
+      <p id="status" class="status" role="status"></p>
+      <pre id="output"></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>Fetching this data from JavaScript (<code>fetch</code>) is next class.</p>
+  </footer>
+</body>
+</html>

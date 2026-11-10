@@ -25,6 +25,8 @@ Every demo from class, one folder each. New demos are added after each class.
 | `15-practice-templates` | 25-question practice set on templates |
 | `16-devtools-bug-hunt` | Find and fix 8 planted bugs with DevTools |
 | `17-practice-devtools` | 25-question practice set on DevTools and debugging |
+| `18-http-json-rest` | A small local books API: HTTP, JSON and REST (`npm start`) |
+| `19-practice-http-json` | 25-question practice set on HTTP, JSON and REST |
 | `34-validation-live-build` | Validation built live: starter with each step commented out (HTML only, `validity`, CSS, `setCustomValidity`, `novalidate`, submit, reset) |
 | `35-todo-crud` | A to-do list with full CRUD: an array of objects, a `<template>` component, `render()`, event delegation, edit in place |
 

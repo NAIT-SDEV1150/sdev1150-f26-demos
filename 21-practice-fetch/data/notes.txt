@@ -1,0 +1,3 @@
+Ranger station hours
+Monday to Friday: 8:00 to 17:00
+Weekends: 9:00 to 15:00

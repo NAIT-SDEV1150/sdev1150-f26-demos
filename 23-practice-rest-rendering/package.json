@@ -1,0 +1,15 @@
+{
+  "name": "sdev1150-23-practice-rest-rendering",
+  "version": "1.0.0",
+  "description": "SDEV1150 practice 23: consuming a REST API and rendering the data (25 questions)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "reset": "node server.js --reset"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "ISC"
+}

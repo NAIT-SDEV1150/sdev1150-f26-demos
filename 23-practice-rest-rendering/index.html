@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice 23 – Consuming a REST API and rendering the data</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- type="module": you may use import/export and top-level await in main.js -->
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Practice 23: REST API → page</h1>
+    <p class="muted">Start the API first (<code>npm start</code>), then open <code>http://localhost:3000</code>. The API: <code>http://localhost:3000/api/books</code></p>
+  </header>
+
+  <!-- ===================== Tier 1: Simple ===================== -->
+  <h2 class="tier">Tier 1 · Simple</h2>
+
+  <section id="q1" class="question">
+    <h3>Q1 · Status code</h3>
+    <p>Status: <output id="q1-output">?</output></p>
+  </section>
+
+  <section id="q2" class="question">
+    <h3>Q2 · How many books?</h3>
+    <p><output id="q2-output">?</output></p>
+  </section>
+
+  <section id="q3" class="question">
+    <h3>Q3 · Build a query string</h3>
+    <p><code id="q3-output">?</code></p>
+  </section>
+
+  <section id="q4" class="question">
+    <h3>Q4 · Object → JSON text</h3>
+    <p><code id="q4-output">?</code></p>
+  </section>
+
+  <section id="q5" class="question">
+    <h3>Q5 · A book that doesn't exist</h3>
+    <p><output id="q5-output">?</output></p>
+  </section>
+
+  <!-- ===================== Tier 2: Easy ===================== -->
+  <h2 class="tier">Tier 2 · Easy</h2>
+
+  <section id="q6" class="question">
+    <h3>Q6 · A small getJson helper</h3>
+    <p>Book 5 is: <output id="q6-output">?</output></p>
+  </section>
+
+  <section id="q7" class="question">
+    <h3>Q7 · Render a list with createElement</h3>
+    <ul id="q7-list"></ul>
+  </section>
+
+  <section id="q8" class="question">
+    <h3>Q8 · Render a list with a &lt;template&gt;</h3>
+    <ul id="q8-list"></ul>
+    <template id="book-template">
+      <li class="book"><strong class="book-title"></strong> by <span class="book-author"></span> (<span class="book-year"></span>)</li>
+    </template>
+  </section>
+
+  <section id="q9" class="question">
+    <h3>Q9 · A loading message</h3>
+    <p id="q9-status" class="status">Not started</p>
+  </section>
+
+  <section id="q10" class="question">
+    <h3>Q10 · An empty state</h3>
+    <ul id="q10-list"></ul>
+  </section>
+
+  <!-- ===================== Tier 3: Competent ===================== -->
+  <h2 class="tier">Tier 3 · Competent</h2>
+
+  <section id="q11" class="question">
+    <h3>Q11 · The api(path, options) helper</h3>
+    <p><output id="q11-output">?</output></p>
+  </section>
+
+  <section id="q12" class="question">
+    <h3>Q12 · Search form</h3>
+    <form id="q12-form">
+      <input id="q12-search" type="search" placeholder="title, author…" aria-label="Search books">
+      <button type="submit">Search</button>
+    </form>
+    <p id="q12-status" class="status"></p>
+    <ul id="q12-list"></ul>
+  </section>
+
+  <section id="q13" class="question">
+    <h3>Q13 · Master / detail</h3>
+    <div class="two-col">
+      <ul id="q13-list" class="button-list"></ul>
+      <div id="q13-detail" class="detail"><p class="muted">Pick a book.</p></div>
+    </div>
+  </section>
+
+  <section id="q14" class="question">
+    <h3>Q14 · Create a book (POST)</h3>
+    <form id="q14-form" class="stack" novalidate>
+      <label>Title <input name="title" type="text"></label>
+      <label>Author <input name="author" type="text"></label>
+      <label>Year <input name="year" type="number"></label>
+      <label>Genre
+        <select name="genre">
+          <option value="">Choose…</option>
+          <option value="fiction">Fiction</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="sci-fi">Sci-fi</option>
+          <option value="mystery">Mystery</option>
+          <option value="non-fiction">Non-fiction</option>
+        </select>
+      </label>
+      <button type="submit">Add book</button>
+    </form>
+    <p id="q14-status" class="status"></p>
+  </section>
+
+  <section id="q15" class="question">
+    <h3>Q15 · Delete, then re-render</h3>
+    <ul id="q15-list"></ul>
+    <p id="q15-status" class="status"></p>
+  </section>
+
+  <!-- ===================== Tier 4: Advanced ===================== -->
+  <h2 class="tier">Tier 4 · Advanced</h2>
+
+  <section id="q16" class="question">
+    <h3>Q16 · Pagination</h3>
+    <ul id="q16-list"></ul>
+    <div class="pager">
+      <button id="q16-prev" type="button">&larr; Previous</button>
+      <span id="q16-info">Page ? of ?</span>
+      <button id="q16-next" type="button">Next &rarr;</button>
+    </div>
+  </section>
+
+  <section id="q17" class="question">
+    <h3>Q17 · Optimistic "read" checkboxes</h3>
+    <label class="muted"><input id="q17-fail" type="checkbox"> Make the server fail (sends <code>X-Simulate-Error: 500</code>)</label>
+    <ul id="q17-list" class="plain"></ul>
+    <p id="q17-status" class="status"></p>
+  </section>
+
+  <section id="q18" class="question">
+    <h3>Q18 · Edit a book (PUT)</h3>
+    <select id="q18-select" aria-label="Choose a book to edit">
+      <option value="">Choose a book…</option>
+    </select>
+    <form id="q18-form" class="stack" novalidate>
+      <label>Title <input name="title" type="text"></label>
+      <label>Author <input name="author" type="text"></label>
+      <label>Year <input name="year" type="number"></label>
+      <label>Genre
+        <select name="genre">
+          <option value="fiction">Fiction</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="sci-fi">Sci-fi</option>
+          <option value="mystery">Mystery</option>
+          <option value="non-fiction">Non-fiction</option>
+        </select>
+      </label>
+      <label>Rating (0–5) <input name="rating" type="number" min="0" max="5"></label>
+      <button type="submit">Save changes</button>
+    </form>
+    <p id="q18-status" class="status"></p>
+  </section>
+
+  <section id="q19" class="question">
+    <h3>Q19 · Show the server's validation errors</h3>
+    <form id="q19-form" class="stack" novalidate>
+      <label>Title <input name="title" type="text"></label>
+      <small class="field-error" data-error-for="title"></small>
+      <label>Author <input name="author" type="text"></label>
+      <small class="field-error" data-error-for="author"></small>
+      <label>Year <input name="year" type="text"></label>
+      <small class="field-error" data-error-for="year"></small>
+      <label>Genre <input name="genre" type="text" placeholder="fiction, fantasy, sci-fi, mystery, non-fiction"></label>
+      <small class="field-error" data-error-for="genre"></small>
+      <button type="submit">Add book</button>
+    </form>
+    <p id="q19-status" class="status"></p>
+  </section>
+
+  <section id="q20" class="question">
+    <h3>Q20 · Counts per genre, in parallel</h3>
+    <ul id="q20-list"></ul>
+  </section>
+
+  <!-- ===================== Tier 5: Applied ===================== -->
+  <h2 class="tier">Tier 5 · Applied</h2>
+
+  <section id="q21" class="question">
+    <h3>Q21 · Search as you type</h3>
+    <input id="q21-search" type="search" placeholder="Start typing…" aria-label="Live search">
+    <p id="q21-status" class="status"></p>
+    <ul id="q21-list"></ul>
+  </section>
+
+  <section id="q22" class="question">
+    <h3>Q22 · Fix the broken "Add" button</h3>
+    <button id="q22-add" type="button">Add "Debugging Notes"</button>
+    <p id="q22-status" class="status"></p>
+  </section>
+
+  <section id="q23" class="question">
+    <h3>Q23 · Filters that live in the address bar</h3>
+    <label>Genre
+      <select id="q23-genre">
+        <option value="">All</option>
+        <option value="fiction">Fiction</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="sci-fi">Sci-fi</option>
+        <option value="mystery">Mystery</option>
+        <option value="non-fiction">Non-fiction</option>
+      </select>
+    </label>
+    <label><input id="q23-unread" type="checkbox"> Only unread</label>
+    <ul id="q23-list"></ul>
+  </section>
+
+  <section id="q24" class="question">
+    <h3>Q24 · Fetch something that isn't JSON</h3>
+    <p><output id="q24-output">?</output></p>
+    <pre id="q24-raw"></pre>
+  </section>
+
+  <section id="q25" class="question">
+    <h3>Q25 · Reading dashboard (every page of results)</h3>
+    <dl id="q25-stats" class="stats">
+      <dt>Books</dt><dd id="q25-total">?</dd>
+      <dt>Read</dt><dd id="q25-read">?</dd>
+      <dt>Average rating (read books)</dt><dd id="q25-avg">?</dd>
+      <dt>Most-read genre</dt><dd id="q25-genre">?</dd>
+    </dl>
+  </section>
+</body>
+</html>

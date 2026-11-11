@@ -1,0 +1,10 @@
+{
+  "page": 1,
+  "items": [
+    { "name": "Johnston Canyon", "km": 5.2 },
+    { "name": "Lake Agnes", "km": 7.4 },
+    { "name": "Valley of the Five Lakes", "km": 4.5 },
+    { "name": "Moose Lake Loop", "km": 2.6 }
+  ],
+  "next": "data/page-2.json"
+}

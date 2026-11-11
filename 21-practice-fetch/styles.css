@@ -1,0 +1,23 @@
+body { font-family: system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.45; color: #1e293b; }
+section { margin: 1.5rem 0; padding: 1rem 1.25rem; border: 1px solid #cbd5e1; border-radius: 10px; }
+section > * + * { margin-top: .9rem; }
+h2 { margin-top: 0; }
+button { cursor: pointer; padding: .3rem .7rem; font: inherit; }
+button:disabled { cursor: progress; opacity: .55; }
+input, select, textarea { font: inherit; }
+code { background: #f1f5f9; padding: 0 .25rem; border-radius: 4px; }
+
+.small  { font-size: .9rem; color: #475569; }
+.label  { display: inline-block; min-width: 2.6rem; font-weight: 700; color: #0f766e; }
+.out    { font-weight: 600; }
+.output { min-height: 1.6rem; padding: .5rem; border: 1px dotted #94a3b8; border-radius: 6px; background: #f8fafc; white-space: pre-wrap; }
+div.output { white-space: normal; }
+.button-row button { margin: .2rem .3rem .2rem 0; }
+
+/* Helper classes for the four UI states. Use them with classList or className. */
+.status  { font-weight: 600; }
+.loading { color: #1d4ed8; }
+.ok      { color: #15803d; }
+.empty   { color: #64748b; }
+.error   { color: #b91c1c; }
+.hidden  { display: none; }

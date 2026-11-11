@@ -1,0 +1,9 @@
+{
+  "page": 2,
+  "items": [
+    { "name": "Rainforest Trail", "km": 2.0 },
+    { "name": "Emerald Lake Loop", "km": 5.2 },
+    { "name": "Shirley Lake Trail", "km": 3.3 }
+  ],
+  "next": null
+}

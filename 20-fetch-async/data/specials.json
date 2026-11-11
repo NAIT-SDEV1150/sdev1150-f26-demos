@@ -1,0 +1,7 @@
+{
+  "day": "Tuesday",
+  "items": [
+    { "menuId": 7, "deal": "Lentil soup + bannock for $8" },
+    { "menuId": 2, "deal": "Oat latte $1 off before 10 a.m." }
+  ]
+}

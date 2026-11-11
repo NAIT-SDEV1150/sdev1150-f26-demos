@@ -1,0 +1,39 @@
+/* Practice 23 helper styles. You don't need to change this file.
+   Classes you can use: .empty .error .ok .loading .selected .muted .invalid .is-read */
+:root { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1d2329; background: #f6f8f6; }
+body { max-width: 900px; margin: 0 auto; padding: 1rem 1rem 4rem; }
+h1 { color: #2f6b3a; margin-bottom: 0.25rem; }
+h2.tier { margin-top: 2.5rem; border-bottom: 2px solid #2f6b3a; padding-bottom: 0.25rem; }
+.question { background: white; border: 1px solid #d7dde3; border-radius: 10px; padding: 0.5rem 1rem 1rem; margin: 1rem 0; }
+.question h3 { margin: 0.5rem 0; font-size: 1.05rem; }
+code, output { font-family: ui-monospace, Menlo, Consolas, monospace; }
+output, code[id] { background: #eef2ee; padding: 0.1rem 0.35rem; border-radius: 4px; }
+
+button, input, select { font: inherit; padding: 0.3rem 0.6rem; border: 1px solid #c9d1d9; border-radius: 6px; background: white; }
+button { cursor: pointer; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.stack { display: grid; gap: 0.4rem; max-width: 360px; }
+.stack label { display: grid; gap: 0.15rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.button-list { list-style: none; padding: 0; display: grid; gap: 0.3rem; }
+.button-list button { width: 100%; text-align: left; }
+.plain { list-style: none; padding: 0; }
+.pager { display: flex; gap: 1rem; align-items: center; }
+.detail { border-left: 3px solid #2f6b3a; padding-left: 1rem; }
+.stats { display: grid; grid-template-columns: max-content 1fr; gap: 0.3rem 1rem; }
+.stats dd { margin: 0; font-weight: 600; }
+pre { background: #1d2329; color: #e6edf3; padding: 0.75rem; border-radius: 6px; white-space: pre-wrap; }
+pre:empty { display: none; }
+
+/* helper classes */
+.muted { color: #5b6470; }
+.status { min-height: 1.2em; }
+.loading { color: #5b6470; font-style: italic; }
+.error { color: #b42318; }
+.ok { color: #2f6b3a; }
+.empty { color: #5b6470; font-style: italic; list-style: none; }
+.selected { outline: 2px solid #2f6b3a; background: #e7f2e8; }
+.invalid { border-color: #b42318; background: #fdecea; }
+.field-error { color: #b42318; min-height: 1em; }
+.is-read { color: #5b6470; text-decoration: line-through; }

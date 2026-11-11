@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Banff", "province": "AB", "areaKm2": 6641, "campsites": 2400 },
+  { "id": 2, "name": "Jasper", "province": "AB", "areaKm2": 11228, "campsites": 1800 },
+  { "id": 3, "name": "Elk Island", "province": "AB", "areaKm2": 194, "campsites": 70 },
+  { "id": 4, "name": "Pacific Rim", "province": "BC", "areaKm2": 511, "campsites": 90 },
+  { "id": 5, "name": "Yoho", "province": "BC", "areaKm2": 1313, "campsites": 200 }
+]

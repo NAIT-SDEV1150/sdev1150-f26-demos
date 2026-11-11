@@ -27,6 +27,10 @@ Every demo from class, one folder each. New demos are added after each class.
 | `17-practice-devtools` | 25-question practice set on DevTools and debugging |
 | `18-http-json-rest` | A small local books API: HTTP, JSON and REST (`npm start`) |
 | `19-practice-http-json` | 25-question practice set on HTTP, JSON and REST |
+| `20-fetch-async` | `fetch`, Promises, `async`/`await`, loading and error states |
+| `21-practice-fetch` | 25-question practice set on fetch |
+| `22-rest-client` | A full front end for a REST API: list, detail, create, update, delete |
+| `23-practice-rest-rendering` | 25-question practice set on consuming REST APIs |
 | `34-validation-live-build` | Validation built live: starter with each step commented out (HTML only, `validity`, CSS, `setCustomValidity`, `novalidate`, submit, reset) |
 | `35-todo-crud` | A to-do list with full CRUD: an array of objects, a `<template>` component, `render()`, event delegation, edit in place |
 

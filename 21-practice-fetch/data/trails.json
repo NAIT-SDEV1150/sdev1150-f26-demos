@@ -1,0 +1,12 @@
+[
+  { "name": "Johnston Canyon", "park": "Banff", "km": 5.2 },
+  { "name": "Lake Agnes", "park": "Banff", "km": 7.4 },
+  { "name": "Sulphur Mountain", "park": "Banff", "km": 11.0 },
+  { "name": "Valley of the Five Lakes", "park": "Jasper", "km": 4.5 },
+  { "name": "Maligne Canyon", "park": "Jasper", "km": 3.7 },
+  { "name": "Moose Lake Loop", "park": "Elk Island", "km": 2.6 },
+  { "name": "Shirley Lake Trail", "park": "Elk Island", "km": 3.3 },
+  { "name": "Rainforest Trail", "park": "Pacific Rim", "km": 2.0 },
+  { "name": "Emerald Lake Loop", "park": "Yoho", "km": 5.2 },
+  { "name": "Takakkaw Falls", "park": "Yoho", "km": 1.3 }
+]

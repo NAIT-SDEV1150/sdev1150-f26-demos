@@ -1,0 +1,28 @@
+{
+  "schema": {
+    "books": {
+      "title": { "type": "string", "required": true, "minLength": 1, "maxLength": 80 },
+      "author": { "type": "string", "required": true, "minLength": 2, "maxLength": 60 },
+      "year": { "type": "integer", "required": true, "min": 1450, "max": 2100 },
+      "genre": { "type": "string", "required": true, "oneOf": ["fiction", "fantasy", "sci-fi", "mystery", "non-fiction"] },
+      "read": { "type": "boolean", "default": false },
+      "rating": { "type": "integer", "min": 0, "max": 5, "default": 0 }
+    }
+  },
+  "books": [
+    { "id": 1, "title": "Pride and Prejudice", "author": "Jane Austen", "year": 1813, "genre": "fiction", "read": true, "rating": 5 },
+    { "id": 2, "title": "Frankenstein", "author": "Mary Shelley", "year": 1818, "genre": "sci-fi", "read": true, "rating": 4 },
+    { "id": 3, "title": "The Time Machine", "author": "H. G. Wells", "year": 1895, "genre": "sci-fi", "read": true, "rating": 4 },
+    { "id": 4, "title": "The War of the Worlds", "author": "H. G. Wells", "year": 1898, "genre": "sci-fi", "read": true, "rating": 3 },
+    { "id": 5, "title": "The Hound of the Baskervilles", "author": "Arthur Conan Doyle", "year": 1902, "genre": "mystery", "read": true, "rating": 5 },
+    { "id": 6, "title": "The Moonstone", "author": "Wilkie Collins", "year": 1868, "genre": "mystery", "read": false, "rating": 0 },
+    { "id": 7, "title": "Alice's Adventures in Wonderland", "author": "Lewis Carroll", "year": 1865, "genre": "fantasy", "read": true, "rating": 4 },
+    { "id": 8, "title": "The Wonderful Wizard of Oz", "author": "L. Frank Baum", "year": 1900, "genre": "fantasy", "read": false, "rating": 0 },
+    { "id": 9, "title": "Anne of Green Gables", "author": "L. M. Montgomery", "year": 1908, "genre": "fiction", "read": true, "rating": 5 },
+    { "id": 10, "title": "Moby-Dick", "author": "Herman Melville", "year": 1851, "genre": "fiction", "read": false, "rating": 0 },
+    { "id": 11, "title": "On the Origin of Species", "author": "Charles Darwin", "year": 1859, "genre": "non-fiction", "read": false, "rating": 0 },
+    { "id": 12, "title": "Walden", "author": "Henry David Thoreau", "year": 1854, "genre": "non-fiction", "read": true, "rating": 2 },
+    { "id": 13, "title": "Peter Pan", "author": "J. M. Barrie", "year": 1911, "genre": "fantasy", "read": false, "rating": 0 },
+    { "id": 14, "title": "The Secret Adversary", "author": "Agatha Christie", "year": 1922, "genre": "mystery", "read": false, "rating": 0 }
+  ]
+}

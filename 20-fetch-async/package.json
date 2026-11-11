@@ -1,0 +1,10 @@
+{
+  "name": "fetch-async-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SDEV1150 demo 20: the Fetch API and asynchronous client code",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

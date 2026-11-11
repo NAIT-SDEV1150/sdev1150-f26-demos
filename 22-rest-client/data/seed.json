@@ -1,0 +1,38 @@
+{
+  "schema": {
+    "plants": {
+      "name": { "type": "string", "required": true, "minLength": 2, "maxLength": 40 },
+      "category": { "type": "string", "required": true, "oneOf": ["cactus", "succulent", "fern", "tropical", "herb"] },
+      "price": { "type": "number", "required": true, "min": 0, "max": 500 },
+      "stock": { "type": "integer", "required": true, "min": 0, "max": 999 },
+      "favourite": { "type": "boolean", "default": false },
+      "notes": { "type": "string", "maxLength": 200, "default": "" }
+    },
+    "categories": {
+      "name": { "type": "string", "required": true },
+      "label": { "type": "string", "required": true }
+    }
+  },
+  "plants": [
+    { "id": 1, "name": "Golden Barrel", "category": "cactus", "price": 24.99, "stock": 6, "favourite": true, "notes": "Round and spiky. Full sun, water every 3 weeks." },
+    { "id": 2, "name": "Bunny Ears", "category": "cactus", "price": 14.5, "stock": 0, "favourite": false, "notes": "Looks soft. Is not soft." },
+    { "id": 3, "name": "Aloe Vera", "category": "succulent", "price": 12, "stock": 14, "favourite": false, "notes": "Bright light. The gel soothes minor burns." },
+    { "id": 4, "name": "Jade Plant", "category": "succulent", "price": 18, "stock": 9, "favourite": true, "notes": "Grows slowly and lives for decades." },
+    { "id": 5, "name": "Echeveria", "category": "succulent", "price": 7.25, "stock": 21, "favourite": false, "notes": "Rosette shape. Do not water the leaves." },
+    { "id": 6, "name": "Boston Fern", "category": "fern", "price": 22, "stock": 4, "favourite": false, "notes": "Likes humidity. A bathroom window is ideal." },
+    { "id": 7, "name": "Maidenhair Fern", "category": "fern", "price": 19.99, "stock": 2, "favourite": false, "notes": "Dramatic: wilts the moment it is dry." },
+    { "id": 8, "name": "Monstera", "category": "tropical", "price": 45, "stock": 3, "favourite": true, "notes": "Leaves split as the plant matures." },
+    { "id": 9, "name": "Snake Plant", "category": "tropical", "price": 29, "stock": 11, "favourite": false, "notes": "Survives low light and forgetful owners." },
+    { "id": 10, "name": "Pothos", "category": "tropical", "price": 16, "stock": 17, "favourite": false, "notes": "Trailing vine. Easy to grow from cuttings." },
+    { "id": 11, "name": "Basil", "category": "herb", "price": 4.5, "stock": 30, "favourite": false, "notes": "Pinch the flowers off to keep leaves coming." },
+    { "id": 12, "name": "Rosemary", "category": "herb", "price": 6, "stock": 12, "favourite": false, "notes": "Let the soil dry between waterings." },
+    { "id": 13, "name": "Old Man Cactus", "category": "cactus", "price": 32, "stock": 1, "favourite": false, "notes": "Covered in long white hairs." }
+  ],
+  "categories": [
+    { "id": 1, "name": "cactus", "label": "Cactus" },
+    { "id": 2, "name": "succulent", "label": "Succulent" },
+    { "id": 3, "name": "fern", "label": "Fern" },
+    { "id": 4, "name": "tropical", "label": "Tropical" },
+    { "id": 5, "name": "herb", "label": "Herb" }
+  ]
+}

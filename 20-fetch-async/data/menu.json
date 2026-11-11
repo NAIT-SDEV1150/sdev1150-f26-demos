@@ -1,0 +1,10 @@
+[
+  { "id": 1, "name": "Drip coffee", "category": "drink", "price": 2.25, "vegan": true },
+  { "id": 2, "name": "Oat latte", "category": "drink", "price": 4.75, "vegan": true },
+  { "id": 3, "name": "Hot chocolate", "category": "drink", "price": 3.5, "vegan": false },
+  { "id": 4, "name": "Butter tart", "category": "snack", "price": 3.25, "vegan": false },
+  { "id": 5, "name": "Bannock with jam", "category": "snack", "price": 3.0, "vegan": true },
+  { "id": 6, "name": "Chili bowl", "category": "meal", "price": 8.5, "vegan": false },
+  { "id": 7, "name": "Lentil soup", "category": "meal", "price": 6.75, "vegan": true },
+  { "id": 8, "name": "Grilled cheese", "category": "meal", "price": 7.0, "vegan": false }
+]

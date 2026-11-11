@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo 20 – Fetch and asynchronous code</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- type="module" lets main.js use import and top-level code like a modern app. -->
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Campus Café: fetch and async</h1>
+    <p>
+      Open DevTools (<kbd>F12</kbd>) and keep the <strong>Network</strong> tab open the whole time.
+      Every box on this page makes a request you can watch.
+    </p>
+    <p class="small">
+      Works with <strong>Live Server</strong> (files only) or <code>npm start</code>
+      (files <em>plus</em> a small API on <code>http://localhost:3020</code>).
+      Server: <span id="server-mode">checking…</span>
+    </p>
+    <label class="small"><input type="checkbox" id="slow"> Slow network (adds a 1-second wait before each request)</label>
+  </header>
+
+  <!-- ===== 1. Sync vs async: the restaurant pager ===== -->
+  <section id="pager">
+    <h2>1. The restaurant pager</h2>
+    <p>
+      <strong>Async:</strong> you order, get a pager and sit down. You can chat while the kitchen cooks.
+      <strong>Sync:</strong> you stand at the counter, frozen, until the food is ready.
+    </p>
+    <button id="btn-async">Order with a pager (async)</button>
+    <button id="btn-sync">Stand at the counter (sync, freezes 2 s)</button>
+    <button id="btn-clear-log" class="quiet">Clear log</button>
+    <ol id="pager-log" class="log"></ol>
+    <p class="small">While the sync one runs, try typing here: <input id="try-typing" placeholder="Can you type?"></p>
+  </section>
+
+  <!-- ===== 2. Load on page load ===== -->
+  <section id="menu-section">
+    <h2>2. Menu, loaded when the page opens</h2>
+    <p id="menu-status" class="status">Waiting…</p>
+    <ul id="menu-list" class="cards"></ul>
+    <button id="btn-reload-menu">Reload menu</button>
+  </section>
+
+  <!-- ===== 3. .then chain vs async/await ===== -->
+  <section id="styles-section">
+    <h2>3. Same request, two styles</h2>
+    <button id="btn-then">Load specials with <code>.then()</code></button>
+    <button id="btn-await">Load specials with <code>async/await</code></button>
+    <p id="specials-status" class="status"></p>
+    <ul id="specials-list"></ul>
+  </section>
+
+  <!-- ===== 4. When things go wrong ===== -->
+  <section id="errors-section">
+    <h2>4. When things go wrong</h2>
+    <label><input type="checkbox" id="check-ok" checked> Check <code>response.ok</code> before reading the body</label>
+    <div class="row">
+      <button data-url="data/menu.json">200: a file that exists</button>
+      <button data-url="data/nope.json">404: a file that doesn't exist</button>
+      <button data-url="data/broken.json">200 but broken JSON</button>
+      <button data-url="https://no-such-host.invalid/menu.json">Network failure</button>
+    </div>
+    <pre id="error-output" class="output">Click a button, then read this box and the Console.</pre>
+  </section>
+
+  <!-- ===== 5. Form submit + URLSearchParams ===== -->
+  <section id="search-section">
+    <h2>5. Search the menu (form submit + query string)</h2>
+    <form id="search-form" novalidate>
+      <label>Name contains <input id="search-q" name="q" placeholder="e.g. latte"></label>
+      <label>Category
+        <select id="search-category" name="category">
+          <option value="">Any</option>
+          <option value="drink">Drinks</option>
+          <option value="snack">Snacks</option>
+          <option value="meal">Meals</option>
+        </select>
+      </label>
+      <button id="btn-search">Search</button>
+    </form>
+    <p class="small">Request URL: <code id="search-url">(none yet)</code></p>
+    <p id="search-status" class="status"></p>
+    <ul id="search-list"></ul>
+  </section>
+
+  <!-- ===== 6. POST an order ===== -->
+  <section id="order-section">
+    <h2>6. Place an order (POST)</h2>
+    <form id="order-form" novalidate>
+      <label>Item <select id="order-item" name="menuId"></select></label>
+      <label>Quantity <input id="order-qty" name="quantity" type="number" value="1" min="1" max="10"></label>
+      <button id="btn-order">Place order</button>
+    </form>
+    <p id="order-status" class="status"></p>
+    <pre id="order-output" class="output small">The server's answer appears here.</pre>
+    <h3>Orders so far</h3>
+    <ul id="order-list"></ul>
+  </section>
+
+  <!-- ===== 7. Promise.all ===== -->
+  <section id="parallel-section">
+    <h2>7. Three requests at once (<code>Promise.all</code>)</h2>
+    <p class="small">Tick <em>Slow network</em> at the top first, so the difference is easy to see.</p>
+    <button id="btn-one-by-one">One after another</button>
+    <button id="btn-all">All at once</button>
+    <p id="parallel-status" class="status"></p>
+  </section>
+
+  <!-- ===== 8. Not just JSON: Markdown ===== -->
+  <section id="markdown-section">
+    <h2>8. Not just JSON: fetch a Markdown file</h2>
+    <button id="btn-markdown">Load notes/about.md</button>
+    <p id="markdown-status" class="status"></p>
+    <div id="markdown-output" class="output"></div>
+  </section>
+
+  <!-- ===== 9. Optional extra: a real public API ===== -->
+  <section id="weather-section">
+    <h2>9. Optional extra: live weather (Open-Meteo, no key needed)</h2>
+    <p class="small">Needs internet. Watch the query string in the Network tab.</p>
+    <form id="weather-form">
+      <select id="weather-city">
+        <option value="53.5461,-113.4938">Edmonton</option>
+        <option value="51.0447,-114.0719">Calgary</option>
+        <option value="49.2827,-123.1207">Vancouver</option>
+        <option value="62.4540,-114.3718">Yellowknife</option>
+      </select>
+      <button id="btn-weather">Get current weather</button>
+    </form>
+    <p id="weather-status" class="status"></p>
+  </section>
+</body>
+</html>

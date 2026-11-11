@@ -1,0 +1,106 @@
+/* Kaktus Plant Shop: REST client demo styles */
+:root {
+  --green: #2f6b3a;
+  --green-light: #e7f2e8;
+  --red: #b42318;
+  --red-light: #fdecea;
+  --grey: #5b6470;
+  --line: #d7dde3;
+  --bg: #f6f8f6;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #1d2329;
+  background: var(--bg);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0 1rem 2rem; }
+
+.site-header { max-width: 1100px; margin: 0 auto; padding: 1.25rem 0 0.5rem; }
+.site-header h1 { margin: 0; color: var(--green); }
+.site-header p { margin: 0.25rem 0 0; color: var(--grey); }
+
+.layout {
+  max-width: 1100px;
+  margin: 1rem auto;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+
+.panel { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 1rem; }
+.panel h2 { margin: 0 0 0.75rem; font-size: 1.2rem; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; }
+
+button {
+  font: inherit;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--green); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button.primary { background: var(--green); border-color: var(--green); color: white; }
+button.danger { color: var(--red); border-color: var(--red); }
+
+input, select, textarea { font: inherit; padding: 0.35rem 0.5rem; border: 1px solid var(--line); border-radius: 6px; }
+input.invalid, select.invalid, textarea.invalid { border-color: var(--red); background: var(--red-light); }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem; }
+.toolbar label { display: flex; flex-direction: column; font-size: 0.85rem; color: var(--grey); gap: 0.2rem; }
+
+.status-row { display: flex; align-items: center; gap: 0.75rem; min-height: 2rem; }
+.status { margin: 0; font-size: 0.95rem; }
+.status.loading { color: var(--grey); font-style: italic; }
+.status.error { color: var(--red); }
+
+.plant-list { list-style: none; margin: 0.5rem 0; padding: 0; display: grid; gap: 0.5rem; }
+.plant-list[aria-busy="true"] { opacity: 0.5; }
+.plant-card { display: flex; align-items: stretch; gap: 0.5rem; }
+.plant-select {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.plant-name { font-weight: 600; }
+.plant-meta { font-size: 0.85rem; color: var(--grey); }
+.plant-card.selected .plant-select { border-color: var(--green); background: var(--green-light); }
+.plant-card.sold-out .plant-name { text-decoration: line-through; color: var(--grey); }
+.plant-fav { font-size: 1.3rem; width: 3rem; color: #c58a00; }
+
+.pager { display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem; }
+
+.plant-detail h3 { margin-top: 0; }
+.plant-detail dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; }
+.plant-detail dt { color: var(--grey); }
+.plant-detail dd { margin: 0; }
+
+.plant-form { display: grid; gap: 0.25rem; }
+.plant-form h3 { margin: 0 0 0.5rem; }
+.plant-form label { font-weight: 600; margin-top: 0.4rem; }
+.field-error { color: var(--red); min-height: 1em; }
+.form-error { color: var(--red); margin: 0.5rem 0 0; min-height: 1.2em; }
+
+.actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.actions.wrap { flex-wrap: wrap; }
+
+.muted { color: var(--grey); }
+.error { color: var(--red); }
+
+.tools { max-width: 1100px; margin: 0 auto; display: grid; gap: 0.75rem; }
+.tools details { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 0.75rem 1rem; }
+.tools summary { cursor: pointer; font-weight: 600; }
+.check { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.75rem; }
+.debug-output, .about {
+  background: #1d2329;
+  color: #e6edf3;
+  padding: 0.75rem;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+}
+.about:empty { display: none; }

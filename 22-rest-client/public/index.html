@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kaktus Plant Shop · REST client demo</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- type="module" lets main.js use import/export. Modules are deferred automatically. -->
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>Kaktus Plant Shop</h1>
+    <p>A tiny REST client: list, detail, create, update and delete plants.</p>
+  </header>
+
+  <main class="layout">
+    <!-- ===== Master: the list ===== -->
+    <section class="panel master" aria-labelledby="list-heading">
+      <div class="panel-head">
+        <h2 id="list-heading">Plants</h2>
+        <button id="new-plant" type="button" class="primary">+ New plant</button>
+      </div>
+
+      <form id="filters" class="toolbar" role="search">
+        <label>Search
+          <input id="search" type="search" name="q" placeholder="e.g. fern" autocomplete="off">
+        </label>
+        <label>Category
+          <select id="category" name="category">
+            <option value="">All</option>
+          </select>
+        </label>
+        <label>Per page
+          <select id="limit" name="limit">
+            <option value="3">3</option>
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+          </select>
+        </label>
+      </form>
+
+      <div class="status-row">
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <button id="retry" type="button" hidden>Try again</button>
+      </div>
+
+      <ul id="plant-list" class="plant-list"></ul>
+
+      <nav class="pager" aria-label="Pages">
+        <button id="prev" type="button">&larr; Previous</button>
+        <span id="page-info">Page 1 of 1</span>
+        <button id="next" type="button">Next &rarr;</button>
+      </nav>
+    </section>
+
+    <!-- ===== Detail: one plant, or the form ===== -->
+    <section class="panel detail" aria-labelledby="detail-heading">
+      <h2 id="detail-heading">Details</h2>
+      <div id="detail">
+        <p class="muted">Pick a plant to see its details.</p>
+      </div>
+
+      <form id="plant-form" class="plant-form" novalidate hidden>
+        <h3 id="form-title">New plant</h3>
+
+        <label for="f-name">Name</label>
+        <input id="f-name" name="name" type="text" maxlength="40">
+        <small class="field-error" data-error-for="name"></small>
+
+        <label for="f-category">Category</label>
+        <select id="f-category" name="category">
+          <option value="">Choose one…</option>
+        </select>
+        <small class="field-error" data-error-for="category"></small>
+
+        <label for="f-price">Price ($)</label>
+        <input id="f-price" name="price" type="number" step="0.01" min="0">
+        <small class="field-error" data-error-for="price"></small>
+
+        <label for="f-stock">In stock</label>
+        <input id="f-stock" name="stock" type="number" step="1" min="0">
+        <small class="field-error" data-error-for="stock"></small>
+
+        <label for="f-notes">Notes</label>
+        <textarea id="f-notes" name="notes" rows="3" maxlength="200"></textarea>
+        <small class="field-error" data-error-for="notes"></small>
+
+        <p id="form-error" class="form-error" role="alert"></p>
+
+        <div class="actions">
+          <button id="save" type="submit" class="primary">Save</button>
+          <button id="cancel" type="button">Cancel</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- ===== Teaching tools ===== -->
+  <section class="tools">
+    <details>
+      <summary>Debug panel: make the API fail on purpose (keep the Network tab open)</summary>
+      <p class="muted">Each button sends one broken request. Look at the status, Payload and Response in DevTools &rarr; Network.</p>
+      <div class="actions wrap">
+        <button type="button" data-debug="404">404: a plant that doesn't exist</button>
+        <button type="button" data-debug="400">400: a plant with a text price</button>
+        <button type="button" data-debug="no-stringify">400: forgot JSON.stringify</button>
+        <button type="button" data-debug="415">415: forgot the Content-Type header</button>
+        <button type="button" data-debug="no-ok">Forgot to check response.ok</button>
+      </div>
+      <label class="check">
+        <input id="simulate-500" type="checkbox">
+        Make every save, delete and favourite fail with a 500 (to see rollback and error states)
+      </label>
+      <pre id="debug-output" class="debug-output">Results appear here.</pre>
+    </details>
+
+    <details>
+      <summary>About this API (fetched as text, not JSON)</summary>
+      <button id="load-about" type="button">Load about.md with fetch</button>
+      <pre id="about" class="about"></pre>
+    </details>
+  </section>
+
+  <!-- ===== Templates: stamps that are never shown until cloned ===== -->
+  <template id="plant-card-template">
+    <li class="plant-card">
+      <button type="button" class="plant-select">
+        <span class="plant-name"></span>
+        <span class="plant-meta"></span>
+      </button>
+      <button type="button" class="plant-fav" aria-pressed="false" aria-label="Favourite">&#9734;</button>
+    </li>
+  </template>
+
+  <template id="plant-detail-template">
+    <article class="plant-detail">
+      <h3 class="detail-name"></h3>
+      <dl>
+        <dt>Category</dt><dd class="detail-category"></dd>
+        <dt>Price</dt><dd class="detail-price"></dd>
+        <dt>In stock</dt><dd class="detail-stock"></dd>
+        <dt>Notes</dt><dd class="detail-notes"></dd>
+      </dl>
+      <div class="actions">
+        <button type="button" class="edit">Edit</button>
+        <button type="button" class="delete danger">Delete</button>
+      </div>
+    </article>
+  </template>
+</body>
+</html>

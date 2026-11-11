@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day 21 – Fetch practice</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- type="module": runs after the page is built (like defer) and allows top-level await. -->
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Park Finder: fetch practice</h1>
+    <p class="small">
+      Open with <strong>Live Server</strong> (or run <code>python3 -m http.server</code> in this folder).
+      <code>fetch</code> does <strong>not</strong> work if you double-click the file (<code>file://</code>).
+      Keep DevTools open on the <strong>Network</strong> and <strong>Console</strong> tabs.
+    </p>
+  </header>
+
+  <!-- ===== Tier 1: Simple ===== -->
+  <section>
+    <h2>Tier 1: Simple</h2>
+    <p><span class="label">Q1</span> Status: <output id="q1-out" class="out"></output></p>
+    <p><span class="label">Q2</span> Message: <output id="q2-out" class="out"></output></p>
+    <p><span class="label">Q3</span> Tip: <output id="q3-out" class="out"></output></p>
+    <p><span class="label">Q4</span> Missing file: <output id="q4-out" class="out"></output></p>
+    <div><span class="label">Q5</span> Notes:<pre id="q5-out" class="output"></pre></div>
+  </section>
+
+  <!-- ===== Tier 2: Easy ===== -->
+  <section>
+    <h2>Tier 2: Easy</h2>
+    <p><span class="label">Q6</span> <output id="q6-out" class="out"></output></p>
+    <div><span class="label">Q7</span> Park names: <ul id="q7-list"></ul></div>
+    <p><span class="label">Q8</span> <button id="q8-btn">Run the order test</button> <output id="q8-out" class="out"></output></p>
+    <p><span class="label">Q9</span> <button id="q9-btn">Show a fact</button> <output id="q9-out" class="out"></output></p>
+    <p><span class="label">Q10</span> <output id="q10-out" class="out"></output></p>
+  </section>
+
+  <!-- ===== Tier 3: Competent ===== -->
+  <section>
+    <h2>Tier 3: Competent</h2>
+    <p><span class="label">Q11</span> <output id="q11-out" class="out"></output></p>
+    <p><span class="label">Q12</span> <output id="q12-out" class="out"></output></p>
+    <p><span class="label">Q13</span> <button id="q13-btn">Load parks</button> <span id="q13-status" class="status"></span></p>
+
+    <div><span class="label">Q14</span>
+      <form id="q14-form" novalidate>
+        <label>Province
+          <select id="q14-province">
+            <option value="AB">Alberta</option>
+            <option value="BC">British Columbia</option>
+            <option value="SK">Saskatchewan</option>
+          </select>
+        </label>
+        <button>Find parks</button>
+      </form>
+      <p id="q14-status" class="status"></p>
+      <ul id="q14-list"></ul>
+    </div>
+
+    <p><span class="label">Q15</span> URL: <code id="q15-out"></code> <span id="q15-status" class="status"></span></p>
+  </section>
+
+  <!-- ===== Tier 4: Advanced ===== -->
+  <section>
+    <h2>Tier 4: Advanced</h2>
+    <p><span class="label">Q16</span> <output id="q16-out" class="out"></output></p>
+
+    <div><span class="label">Q17</span> Pick a park:
+      <div id="q17-list" class="button-row"></div>
+      <p id="q17-detail" class="output"></p>
+    </div>
+
+    <div><span class="label">Q18</span> <button id="q18-btn">Send a visit (POST)</button>
+      <pre id="q18-body" class="output"></pre>
+      <p id="q18-out" class="status"></p>
+    </div>
+
+    <p><span class="label">Q19</span> <output id="q19-out" class="out"></output></p>
+    <p><span class="label">Q20</span> <output id="q20-out" class="out"></output></p>
+  </section>
+
+  <!-- ===== Tier 5: Applied ===== -->
+  <section>
+    <h2>Tier 5: Applied</h2>
+
+    <div><span class="label">Q21</span>
+      <label>Search trails <input id="q21-search" placeholder="e.g. lake" autocomplete="off"></label>
+      <span id="q21-count" class="small"></span>
+      <ul id="q21-list"></ul>
+    </div>
+
+    <p><span class="label">Q22</span> <output id="q22-out" class="out"></output></p>
+
+    <div><span class="label">Q23</span> <button id="q23-btn">Show ranger notes</button>
+      <div id="q23-out" class="output"></div>
+    </div>
+
+    <div><span class="label">Q24</span> Weather by park: <ul id="q24-list"></ul></div>
+
+    <div><span class="label">Q25</span>
+      <form id="q25-form" novalidate>
+        <label for="q25-message">Message to the rangers</label><br>
+        <textarea id="q25-message" rows="3" cols="40"></textarea><br>
+        <button id="q25-send">Send</button>
+      </form>
+      <p id="q25-status" class="status"></p>
+    </div>
+  </section>
+</body>
+</html>
